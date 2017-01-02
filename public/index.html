@@ -1,26 +1,28 @@
 <!doctype html>
 <html ng-app="app">
-   <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
-      <script src="app.js"></script>
-      <link rel="stylesheet" href="/css/styles.css">
-      <title>AngularJS: Single Page com ngView e ngRoute</title>
-      <base href="/">
-   </head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
+        <script src="app.js"></script>
+        <link rel="stylesheet" href="/css/styles.css">
+        <title>AngularJS: Single Page com ngView e ngRoute</title>
+        <base href="/">
+    </head>
 
-   <body>
-      <ul class="nav nav-tabs">
-         <li ng-class="{active: activetab == '/'}"><a href="/home">Home</a></li>
-         <li ng-class="{active: activetab == '/sobre'}"><a href="/about">About</a></li>
-         <li ng-class="{active: activetab == '/contato'}"><a href="/login">Login</a></li>
-      </ul>
+    <body>
+        <ul class="nav nav-tabs">
+            <li ng-class="{active: activetab == '/'}"><a href="/home">Home</a></li>
+            <li ng-class="{active: activetab == '/sobre'}"><a href="/about">About</a></li>
+            <li ng-class="{active: activetab == '/contato'}"><a href="/login">Login</a></li>
+        </ul>
 
-      <div ng-view></div>
+        <div ng-view></div>
 
 
 
-      <script src="controllers/controllers.js"></script>
+        <script src="controllers/homecontroller.js"></script>
+        <script src="controllers/aboutcontroller.js"></script>
+        <script src="controllers/logincontroller.js"></script>
    </body>
 </html>
