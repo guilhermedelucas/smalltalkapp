@@ -1,0 +1,168 @@
+* {margin:0;padding:0;list-style:none;vertical-align:top;text-decoration: none;a; text-decoration: none;/* z-index: -1; */}
+
+a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+body {
+    font-family: Helvetica;
+}
+
+#more_page_button {
+    display: flex;
+    margin: auto;
+}
+
+#container_img {
+    background: url(images/snow_mountain.jpg) no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    flex-wrap:wrap;
+    padding: 10px;
+}
+
+#upload_div {
+    background: url(images/snow_mountain.jpg) no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    flex-wrap:wrap;
+}
+
+#upload_box, #img_box {
+    background-color: rgba(255, 255, 255, 0.78);
+    padding: 30px;
+    border-radius: 5px;
+    border: 1px solid white;
+    align-items: center;
+}
+
+.img_title {
+    font-size: 1.3em;
+
+}
+
+.input_file{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.input_file + label {
+    align-items: center;
+    font-size: 1.1em;
+    padding: 10px;
+    font-weight: 700;
+    color: rgb(82, 132, 191);
+    cursor: pointer;
+    margin-top: -3px;
+    vertical-align:middle;
+    justify-content: center;
+    display: flex;
+}
+
+.input_file:focus + label,
+.input_file + label:hover {
+    background-color: rgba(119, 199, 233, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.input_text {
+    align-items: center;
+    font-size: 1em;
+    padding: 10px;
+    font-weight: 700;
+    color: rgb(82, 132, 191);
+    margin-top: -3px;
+    vertical-align:middle;
+    justify-content: center;
+    display: flex;
+    width: 500px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.button_icon {
+    padding: 0 10px;
+    align-items: baseline;
+}
+
+input[type="text"]
+{
+    font-size: 1em;
+    margin-top: 1px;
+    border: none;
+    color: #525252;
+    line-height:15px;
+    padding: 14px 25px 13px 25px;
+    max-width: 500px;
+    border-radius: 4px;
+    background: white;
+}
+
+.button {
+    border: none;
+    padding: 10px 25px 10px 25px;
+    background-color: white;
+    color: #525252;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    font-size: 1em;
+    font-weight: 700;
+    margin: auto;
+}
+
+.img_preview {
+    padding: 0 0 15px 0;
+}
+
+#displayimage{
+    max-height: 250px;
+    margin: 10px 0;
+}
+
+#footer, #header {
+    display: flex;
+    text-align: center;
+    padding: 30px;
+    background-color: rgba(15, 41, 131, .85);
+    color: white;
+    justify-content: center;
+}
+
+#header p {
+    align-items: center;
+    justify-content: center;
+}
+
+#comments_box {
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.78);
+    padding: 30px;
+    border-radius: 5px;
+    border: 1px solid white;
+    align-items: center;
+}
+
+#single_img{
+    max-width: 80vmax;
+    margin: 15px 0;
+}

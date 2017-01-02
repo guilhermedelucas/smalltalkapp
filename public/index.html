@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Imageboad Backbone</title>
+</head>
+<body>
+
+    <!-- GALLERY -->
+    <div id="main"></div>
+    <!-- GALLERY -->
+
+    <!-- IMAGE UPLOAD -->
+        <script id="uploadScript" type="text/handlebars">
+        <div id="header">
+            <div>
+                <a href="#"><p>Image Gallery</p></a>
+            </div>
+        </div>
+        <div id="upload_div">
+            <div id="upload_box">
+            <div class="center">
+                <h1>Upload an image or enter an image Url</h1>
+            </div>
+                <div class="center">
+                <form id="uploadimage">
+                    <div class="center">
+                        <input type="file" name="file" id="file" class="input_file">
+                        <label for="file"> <img src="/images/picture_icon.png" height="30px" class="button_icon">Choose a file</label>
+                    </div>
+                    <div class="center">
+                        <input type="text" name="imageUrl" id="imageUrl" placeholder="Enter the image URL" class="input_text" style= "margin-right: 15px">
+                        <button id="previewImageUrl" class="button"><img src="/images/preview_icon.png" height="30px" class="button_icon">Preview</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+        </script>
+    <!-- IMAGE UPLOAD -->
+
+    <!--PREVIEW IMAGE -->
+    <script id="previewImage" type="text/handlebars">
+    <div id="header">
+        <div>
+            <a href="#"><p>Image Gallery</p></a>
+        </div>
+    </div>
+    <div id="upload_div">
+        <div id="upload_box">
+        <div class="center">
+            <form id="uploadimage">
+                <div id="imgPreview"><img id="displayimage"  class="img_preview"></div>
+                <input type="file" name="file" id="file" class="input_file"><label for="file"> <img src="/images/picture_icon.png" height="30px" class="button_icon">Choose another file</label></br>
+                <button type="submit" id="submitImage" class="button" class="center"><img src="/images/send_icon.png" height="27px" class="button_icon" margin-top="-2px">Submit Image</button>
+            </form>
+        </div>
+        </div>
+    </div>
+    </script>
+    <!--PREVIEW IMAGE -->
+
+
+    <script id="submitData" type="text/handlebars">
+    <div id="header">
+        <div>
+            <a href="#"><p>Image Gallery</p></a>
+        </div>
+    </div>
+    <div id="upload_div">
+        <div id="upload_box">
+        <div class="center">
+            <form id="uploadimage">
+                <input type="text" name="title" id="title" class="input_text"   style="margin: auto; width:93.5%"  placeholder="Entre the image title" >
+                <div id="imgPreview"><img id="displayimage"></div>
+                <input type="text" name="description" id="description"  class="input_text" style="margin: auto;  width:93.5%"
+placeholder="Enter the image description" style="margin-bottom:15px">
+                <input type="text" name="tags" id="tags" class="input_text"
+placeholder="Insert the image tags, separeted by commas" style="margin: 15px 0px 15px 0">
+            <button type="submit" id="submitButton" class="button" class="center" style="margin-top: 15px"><img src="/images/send_icon.png" height="27px" class="button_icon" margin-top="-2px">Submit Title and Description</button>
+
+        </form>
+        </form>
+    </div>
+    </div>
+</div>
+    </script>
+
+
+    <!-- HANDLEBARS GALLERY -->
+    <script id="renderImages" type="text/handlebars">
+        <div id="header">
+            <div>
+                <a href="#upload"><p>Upload Image</p></a>
+            </div>
+            <div style="margin-right: 40px">
+                <a href="#"><p>Image Gallery</p></a>
+            </div>
+        </div>
+        <div id="container_img">
+        {{#each images}}
+                <div id="img_box" style="margin: 10px">
+                    <h1 class="img_title">{{title}}</h1>
+                    <img src="{{image}}" id="displayimage">
+                    <span id="likebutton"><img src="/images/unlike.png" id="{{id}}"><span id="likesnumber-{{id}}">{{likes}}</span></span>
+                    <p>{{description}}</p>
+                    {{#each this.tags}}
+                    <a href="/#imagetag/{{this}}"<span style="color: black">{{this}} <span></a>
+                    {{/each}}
+                    <p>{{username}}</p>
+                </div>
+        {{/each}}
+        </div>
+        <div>
+            <div id="footer">
+                <a href="/#{{this.length}}"><p id="more_images">More Images</p></a>
+            </div>
+        </div>
+    </script>
+    <!-- HANDLEBARS GALLERY -->
+
+
+    <!-- SINGLE IMAGE GALLERY -->
+    <script id="singleImageGallery" type="text/handlebars">
+    <div id="header">
+        <div style="margin-right: 40px">
+            <a href="#upload"><p>Upload Image</p></a>
+        </div>
+        <div style="margin-right: 40px">
+            <a href="#"><p>Image Gallery</p></a>
+        </div>
+    </div>
+    <div id="container_img" style="flex-direction: column">
+        <div>
+        {{#each images}}
+                <div id="img_box">
+                    <h1>{{title}}</h1>
+                    <img src="{{image}}" id="single_img">
+                    <p>{{description}}</p>
+                    <p>{{username}}
+                </div>
+        {{/each}}
+        </div>
+        <div class="center" style="flex-direction: column">
+            <div>
+                <div>
+                    <input type="text" name="comment" id="addcomment" placeholder="Add your comment" class="input_text">
+                </div>
+                <div>
+                    <input type="text" name="comment" id="user" placeholder="Username" class="input_text" style="max-width: 500px; margin: 10px 0;">
+                </div>
+                <div>
+                    <button id="buttonAddComment" class="button">Add Comment </button>
+                </div>
+            </div>
+        </div>
+        <div>
+        {{#each comments}}
+            <div id="comments_box" style="margin: 5px 0px" width = "200">
+            <p> {{username}} : {{comment}} </p>
+            </div>
+        {{/each}}
+        </div>
+    </div>
+
+    </script>
+    <!-- HANDLEBARS GALLERY -->
+
+</body>
+<script src="/js/underscore-min.js"></script>
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/handlebars.min.js"></script>
+<script src="/js/backbone-min.js"></script>
+<script src="/js/script.js"></script>
+</html>
