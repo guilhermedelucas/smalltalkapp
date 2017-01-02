@@ -1,20 +1,12 @@
 var express = require('express');
-var multer = require('multer');
 var bodyParser = require('body-parser');
-var http = require('http');
-var https = require('https');
-var fs = require('fs');
-var url = require('url');
 var app = express();
-var basicAuth = require('basic-auth');
-
 
 //queries//
 var password = require("./password.json");
 var spicedPg = require('spiced-pg');
-var db = spicedPg('postgres:' + password.dbUser + ':' + password.dbPassword + '@localhost:5432/imageboard');
+var db = spicedPg('postgres:' + password.dbUser + ':' + password.dbPassword + '@localhost:5432/smalltalk');
 //queries//
-
 
 
 app.use(express.static('public'));
