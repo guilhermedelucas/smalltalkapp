@@ -18,6 +18,11 @@ var app = angular.module('app',['ngRoute']);
                 controller: "PostCtrl"
             })
 
+            .when('/username=:id', {
+                templateUrl: "views/user.html",
+                controller: "single"
+            })
+
             // to the route '/about', load the template about.html and the controller 'AboutCtrl'
             .when('/about', {
                 templateUrl : 'views/about.html',
