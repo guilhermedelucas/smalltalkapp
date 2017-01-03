@@ -1,14 +1,9 @@
-<div id="post-box">
-    <span class="rank">{{counter}}</span>
+<div id="post-box" ng-if="posts" ng-repeat="posts in posts">
+    <span class="rank">{{$index + 1}}</span>
     <p class="title">
-        <a href=""> {{text}} </a> </p>
+        <a href=http://{{posts.url}}> {{posts.title}} </a> </p>
     <p class="tagline">
-        <span class="score" id="{{post_id}}_score"> {{post_id_total}}</span>
-        by <a href="username={{username}}">{username}</a>
-        <span class="age">
-
-
-
-
-
+        <span class="score" id="{{posts.id}}_score"> {{posts.id}}</span>
+        by <a href="username={{posts.username}}">{{posts.username}}</a>
+        <span class="age">{{posts.created_at}}</span>
 </div>
