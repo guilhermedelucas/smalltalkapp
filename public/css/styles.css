@@ -5,3 +5,23 @@
    vertical-align: top;
    text-decoration: none;
 }
+
+/* Home Page Login and Register Forms*/
+.main-container {
+   width: 1100px;
+   margin: 20px auto;
+}
+
+.register-container {
+   width: 550px;
+   float: left;
+}
+
+.login-container {
+   width: 550px;
+   float: left;
+}
+
+.active{
+   font-size: 30px;
+}
