@@ -1,3 +1,40 @@
-<div class="page-header">
-   <h1>login</h1>
+<div class="main-container">
+   <div class="register-container">
+      <div class="register-header">
+         <h1>Register</h1>
+      </div>
+         <div>
+            <input id='registerUsername' name='registrationUsername' type="text" placeholder="User Name" ng-model= "registerUsername"/>
+         </div>
+         <div>
+            <input id='registerEmail' name='registrationEmail' type="text" placeholder="Email"ng-model= "registerEmail"/>
+         </div>
+         <div>
+            <input id='registerPassword' name='registrationPassword' type="password" placeholder="Password" ng-model= "registerPassword"/>
+         </div>
+         <div>
+            <input id='confirmPassword' name='confirmPassword' type="password" placeholder="Confirm Password" ng-model= "confirmedPassword"/>
+         </div>
+         <button ng-click="getRegistrationData()">Register</button>
+         <div ng-if="registerFaliure">Please make sure to provide all information required before submitting!</div>
+         <div ng-if="passwordNotMatch">Passwords do not match!</div>
+
+   </div>
+
+   <div class="login-container">
+      <div class="login-header">
+         <h1>Login</h1>
+      </div>
+
+      <form>
+         <div>
+            <input id='loginUsername' name='username' type="text" placeholder="User Name" ng-model= "loginUsername" />
+         </div>
+         <div>
+            <input id='loginPassword' name='password' type="password" placeholder="Password" ng-model= "loginPassword"/>
+         </div>
+         <div ng-if="loginFaliure">Please make sure to provide all information required before submitting!</div>
+         <button ng-click="getLoginData()">Login</button>
+      </form>
+   </div>
 </div>
