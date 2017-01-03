@@ -17,6 +17,7 @@ CREATE TABLE posts(
    title VARCHAR(255) NOT NULL,
    url TEXT,
    post TEXT,
+   total_comments INTEGER,
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -29,6 +30,6 @@ CREATE TABLE comments(
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO posts (username, title, url) VALUES ('guilher', 'Teste', 'www.teste.com');
-INSERT INTO posts (username, title, url) VALUES ('spongebob', 'Another URL', 'www.globo.com');
-INSERT INTO posts (username, title, url) VALUES ('mattfewer', 'bla bla bla URL', 'www.bla.com');
+INSERT INTO posts (username, title, url) VALUES ('guilher', 'Teste', 'http://www.teste.com');
+INSERT INTO posts (username, title, url) VALUES ('spongebob', 'Another URL', 'http://www.globo.com');
+INSERT INTO posts (username, title, url) VALUES ('mattfewer', 'bla bla bla URL', 'http://www.bla.com');

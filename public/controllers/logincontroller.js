@@ -1,6 +1,6 @@
 (function () {
 
-    app.controller('AboutCtrl', function($rootScope, $location)
+    app.controller('LoginCtrl', function($rootScope, $location)
     {
        $rootScope.activetab = $location.path();
     });
