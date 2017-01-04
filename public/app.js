@@ -8,8 +8,8 @@ const app = angular.module("app",["ngRoute"]);
 
             // to the route '/', load the template home.html and the controller 'HomeCtrl'
             .when('/', {
-                templateUrl : 'views/home.html',
-                controller     : 'HomeCtrl'
+                templateUrl: 'views/home.html',
+                controller: 'HomeCtrl'
             })
 
             .when('/post:id', {
@@ -19,14 +19,14 @@ const app = angular.module("app",["ngRoute"]);
 
             // to the route '/about', load the template about.html and the controller 'AboutCtrl'
             .when('/about', {
-                templateUrl : 'views/about.html',
-                controller  : 'AboutCtrl'
+                templateUrl: 'views/about.html',
+                controller: 'AboutCtrl'
             })
 
             // to the rote '/login', load the template login.html and the controller 'LoginCtrl'
             .when('/login', {
-                templateUrl : 'views/login.html',
-                controller  : 'LoginCtrl'
+                templateUrl: 'views/login.html',
+                controller: 'LoginCtrl'
             })
             // in case of any other redirect to '/'
             .otherwise (

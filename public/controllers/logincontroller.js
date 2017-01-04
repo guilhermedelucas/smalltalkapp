@@ -2,10 +2,10 @@
 
    app.controller('LoginCtrl', function($rootScope, $scope, $location, $http)
    {
+      // console.log($location);
       $rootScope.activetab = $location.path();
       //registration
       $scope.getRegistrationData = function() {
-         console.log($scope.registrationPassword)
          if (!$scope.registerUsername || !$scope.registerEmail || !$scope.registerPassword || !$scope.confirmedPassword){
                $scope.registerFaliure = true;
          } else {
@@ -16,10 +16,10 @@
             }
             $http.post('/register', registeredUserData).then(function(res){
                res.config.data = '';
-               //redirect $location
+               $location.path('/about')
             })
          }
-         //check pasword matching
+         //check password1 and password2 match
          if ($scope.registerPassword !== $scope.confirmedPassword) {
             $scope.passwordNotMatch = true;
          } else {
@@ -38,8 +38,11 @@
             }
             $http.post('/login', loginUserData).then(function(res){
                res.config.data = '';
-               var message = res.data.message;
-               //redirect $location
+               console.log(res.data); //get a "true" value when login info correct and a message when incorrect
+               $scope.invalidCredentials = res.data.message;
+               if (!res.data.message){
+                  $location.path("/about");
+               }
             });
          }
       }

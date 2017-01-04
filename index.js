@@ -56,16 +56,19 @@ app.post('/login', function(req, res){
    if (req.body.username && req.body.password) {
       var getPass = db.query(query, params);
       getPass.then(function(data){
-         console.log(data);
-         console.log(data.rows[0].username);
          req.session.user = {
             username: data.rows[0].username
          }
          var checkPass = hashingAndChecking.checkPassword(req.body.password, data.rows[0]['password']); //typedPass, dbPass
          checkPass.then(function(data){
+            // if pass match >> data = true
             if(data === true) {
-               //response with json to redirect to homepage
+               console.log("true");
+               res.json({
+                  success: true
+               })
             } else if (data === false){
+               console.log("false");
                res.json({
                   message: "Email or password is wrong! Please check and submit again."
                })
@@ -74,7 +77,7 @@ app.post('/login', function(req, res){
             console.log(err);
          });
       }).catch(function(err){
-      console.log(err);
+         console.log(err);
       });
    }
 });

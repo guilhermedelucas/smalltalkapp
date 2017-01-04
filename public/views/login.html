@@ -18,6 +18,7 @@
          <button ng-click="getRegistrationData()">Register</button>
          <div ng-if="registerFaliure">Please make sure to provide all information required before submitting!</div>
          <div ng-if="passwordNotMatch">Passwords do not match!</div>
+         <div ng-model="invalidCredentials">{{invalidCredentials}}</div>
 
    </div>
 
