@@ -1,0 +1,15 @@
+<div style="margin-top:15px; margin-left:10px">
+    <h1><a href="{{postData[0].url}}"> {{postData[0].title}} </a> </h1>
+    <p> <a href="/username={{postData[0].username}}">{{postData[0].username}} </a> | Total Comments {{postData[0].total_comments}} </p>
+    <p> Posted about {{postData[0].created_at}} </p>
+</div>
+
+<div id="display-comments" ng-if="comments" ng-repeat="comments in comments" style="margin-top:15px; margin-left:10px">
+    <span class="rank">{{$index + 1}}</span>
+    <p class="title">
+        {{comments.username}} </p>
+    <p class="tagline">
+        {{comments.comment}}
+        about <span class="age">{{comments.created_at}}</span>
+</div>
+<div ng-click="morePage()">Show more posts</div>
