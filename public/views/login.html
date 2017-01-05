@@ -1,41 +1,58 @@
+<!-- <form novalidate> will remove “please fill out this field” pop up message which is the browser default validation message-->
 <div class="main-container">
-   <div class="register-container">
-      <div class="register-header">
-         <h1>Register</h1>
+   <form name="registerForm" novalidate>
+      <div class="register-container">
+         <div class="register-header"><h1>Register</h1></div>
+         <div>
+            <input id='registerUsername' name='registrationUsername' type="text" placeholder="Your Name" ng-model="register.registrationUsername" ng-required="true"/>
+            <div ng-show="registerForm.registrationUsername.$touched && registerForm.registrationUsername.$invalid">
+               <small style="color: red">Please enter a valid name!</small>
+            </div>
+         </div>
+         <div>
+            <input id='registerEmail' name='registrationEmail' type="email" placeholder="abc.example.com" ng-model="register.registrationEmail" ng-required="true"/>
+            <div ng-show="registerForm.registrationEmail.$touched && registerForm.registrationEmail.$invalid">
+               <small style="color: red">Please enter a valid email!</small>
+            </div>
+         </div>
+         <div>
+            <input id='registerPassword' name='registrationPassword' type="password" placeholder="New Password" ng-model="register.registrationPassword" ng-required="true"/>
+            <div ng-show="registerForm.registrationPassword.$touched && registerForm.registrationPassword.$invalid">
+               <small style="color: red">Please enter a password!</small>
+            </div>
+         </div>
+         <div>
+            <input id='confirmPassword' name='confirmedPassword' type="password" placeholder="Re-enter Password" ng-model="register.confirmedPassword" ng-required="true"/>
+            <div ng-show="registerForm.confirmedPassword.$touched && registerForm.confirmedPassword.$invalid">
+               <small style="color: red">Please confirm your password!</small>
+            </div>
+         </div>
+         <button ng-disabled="registerForm.$invalid" ng-click="getRegistrationData()">Register</button>
+         <div ng-if="registerInfoRequired">Please make sure to provide all information required before submitting!</div>
+         <div ng-if="passwordsDoNotMatch">Passwords do not match!</div>
+         <div ng-model="errEmailOrPassExists">{{errEmailOrPassExists}}</div>
       </div>
-         <div>
-            <input id='registerUsername' name='registrationUsername' type="text" placeholder="User Name" ng-model= "registerUsername"/>
-         </div>
-         <div>
-            <input id='registerEmail' name='registrationEmail' type="text" placeholder="Email"ng-model= "registerEmail"/>
-         </div>
-         <div>
-            <input id='registerPassword' name='registrationPassword' type="password" placeholder="Password" ng-model= "registerPassword"/>
-         </div>
-         <div>
-            <input id='confirmPassword' name='confirmPassword' type="password" placeholder="Confirm Password" ng-model= "confirmedPassword"/>
-         </div>
-         <button ng-click="getRegistrationData()">Register</button>
-         <div ng-if="registerFaliure">Please make sure to provide all information required before submitting!</div>
-         <div ng-if="passwordNotMatch">Passwords do not match!</div>
-         <div ng-model="invalidCredentials">{{invalidCredentials}}</div>
+   </form>
 
-   </div>
 
-   <div class="login-container">
-      <div class="login-header">
-         <h1>Login</h1>
+   <form name="loginForm" novalidate>
+      <div class="login-container">
+         <div class="login-header"><h1>Login</h1></div>
+         <div>
+            <input id='loginUsername' name='username' type="text" placeholder="Your Name" ng-model= "login.loginUsername" ng-required="true" />
+            <div ng-show="loginForm.username.$touched && loginForm.username.$invalid">
+               <small style="color: red">Please enter your name!</small>
+            </div>
+         </div>
+         <div>
+            <input id='loginPassword' name='password' type="password" placeholder="Your Password" ng-model= "login.loginPassword" ng-required="true"/>
+            <div ng-show="loginForm.password.$touched && loginForm.password.$invalid">
+               <small style="color: red">Please enter your password!</small>
+            </div>
+         </div>
+         <div ng-if="loginInfoRequired">Please make sure to provide all information required before submitting!</div>
+         <button ng-disabled="loginForm.$invalid" ng-click="getLoginData()">Login</button>
+         <div ng-model="incorrectLoginCredintials">{{incorrectLoginCredintials}}</div>
       </div>
-
-      <form>
-         <div>
-            <input id='loginUsername' name='username' type="text" placeholder="User Name" ng-model= "loginUsername" />
-         </div>
-         <div>
-            <input id='loginPassword' name='password' type="password" placeholder="Password" ng-model= "loginPassword"/>
-         </div>
-         <div ng-if="loginFaliure">Please make sure to provide all information required before submitting!</div>
-         <button ng-click="getLoginData()">Login</button>
-      </form>
-   </div>
+   </form>
 </div>

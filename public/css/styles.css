@@ -25,3 +25,14 @@
 .active{
    font-size: 30px;
 }
+
+input.ng-invalid.ng-touched {
+   border: 5px solid red;
+   border-width: thin;
+}
+
+button[disabled="disabled"]{
+   opacity: 0.5;
+   cursor: not-allowed !important;
+   color: red
+}

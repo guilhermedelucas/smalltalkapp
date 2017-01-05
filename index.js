@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({
    extended: false
 }));
 
+
 app.use(express.static('public'));
 
 app.use(function(req,res,next){
@@ -33,83 +34,68 @@ app.use(function(req,res,next){
 
 app.post('/register', function(req, res){
    hashingAndChecking.hashPassword(req.body.password).then(function(hashedPass){
-      var query = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING username';
+      var query = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3)';
       var params = [req.body.username, req.body.email, hashedPass];
       var fillUserTable = db.query(query, params);
-      fillUserTable.then(function(data){
+      return fillUserTable.then(function(data){
          req.session.user = {
-            username: data.rows[0].username
+            username: req.body.username
          }
          res.json({
             success: true
          })
       })
    }).catch(function(err){
-      console.log(err);
+      if (err.detail.startsWith("Key (email)")){
+         res.json({
+            err: "Email already exists"
+         })
+      } else if(err.detail.startsWith("Key (username)")){
+         res.json({
+            err: "Username already exists"
+         })
+      } else {
+         console.log(err);
+      }
    })
 });
 
 app.post('/login', function(req, res){
-   var query = 'SELECT username, password FROM users WHERE username = $1';;
+   var query = 'SELECT password FROM users WHERE username = $1';
    var params = [req.body.username];
-   if (req.body.username && req.body.password) {
-      var getPass = db.query(query, params);
-      getPass.then(function(data){
-         req.session.user = {
-            username: data.rows[0].username
-         }
-         var checkPass = hashingAndChecking.checkPassword(req.body.password, data.rows[0]['password']); //typedPass, dbPass
-         checkPass.then(function(data){
-            // if pass match >> data = true
-            if(data === true) {
-               console.log("true");
-               res.json({
-                  success: true
-               })
-            } else if (data === false){
-               console.log("false");
-               res.json({
-                  message: "Email or password is wrong! Please check and submit again."
-               })
+   var getPass = db.query(query, params);
+   getPass.then(function(data){
+      console.log(data);
+      var checkPass = hashingAndChecking.checkPassword(req.body.password, data.rows[0]['password']); //typedPass, dbPass
+      return checkPass.then(function(data){
+         // if pass match >> data = true
+         if(data === true) {
+            console.log("password match");
+            req.session.user = {
+               username: req.body.user
             }
-         }).catch(function(err){
-            console.log(err);
-         });
-      }).catch(function(err){
-         console.log(err);
+            res.json({
+               success: true
+            })
+            console.log("response sent");
+         } else if (data === false){
+            console.log("password doesn't match");
+            res.json({
+               error: "Password is wrong! Please check and submit again."
+            })
+         }
+      })
+   }).catch(function(err){
+      console.log(err);
+      res.json({
+         error: "Username is not correct!"
       });
-   }
+   });
 });
 
-app.get('/home/:id', function(req, res) {
-    console.log(req.params);
-    db.query('SELECT * FROM posts ORDER BY created_at DESC LIMIT $1', [10 + req.params.id*10]).then(function(data){
-        res.send({
-            posts: data.rows
-        });
-    }).catch(function(err){
-        console.log(err);
-        res.sendStatus(500);
-    });
-});
-
-app.get('/getpost=:id', function(req, res) {
-    db.query('SELECT * FROM comments WHERE post_id = $1 ORDER BY created_at DESC',  [req.params.id]).then(function(comments){
-        db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post){
-        res.send({
-            comments: comments.rows,
-            postData: post.rows
-        });
-    })
-    }).catch(function(err){
-        console.log(err);
-        res.sendStatus(500);
-    });
-});
-
-app.get("*", function(req, res){
-    res.sendFile(__dirname + "/public/index.html");
-});
+app.get('*', function(req, res){
+   res.sendFile(__dirname + "/public/index.html");
+})
 
 app.listen(8080, function() {
     console.log('Listening')
