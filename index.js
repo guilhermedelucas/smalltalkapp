@@ -51,6 +51,18 @@ app.post('/submit', function(req, res) {
     });
 });
 
+ app.get('/home/:id', function(req, res) {
+     console.log(req.params);
+     db.query('SELECT * FROM posts ORDER BY created_at DESC LIMIT $1', [10 + req.params.id*10]).then(function(data){
+         res.send({
+             posts: data.rows
+         });
+     }).catch(function(err){
+         console.log(err);
+         res.sendStatus(500);
+     });
+ });
+
 app.get('/getpost=:id', function(req, res) {
     db.query('SELECT * FROM comments WHERE post_id = $1',  [req.params.id]).then(function(comments){
         db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post){
