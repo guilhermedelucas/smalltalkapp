@@ -25,6 +25,7 @@ app.use(function(req,res, next){
     console.log(req.path);
     next();
 });
+
 app.use(bodyParser.urlencoded({
     extended: false }));
 
@@ -51,6 +52,7 @@ app.post('/submit', function(req, res) {
     });
 });
 
+
  app.get('/home/:id', function(req, res) {
      console.log(req.params);
      db.query('SELECT * FROM posts ORDER BY created_at DESC LIMIT $1', [10 + req.params.id*10]).then(function(data){
@@ -75,6 +77,7 @@ app.get('/getpost=:id', function(req, res) {
         console.log(err);
         res.sendStatus(500);
     });
+});
 
 app.post('/addcomment', function(req, res){
     console.log(req.body);
@@ -150,7 +153,7 @@ app.post('/login', function(req, res){
 
 app.get('*', function(req, res){
    res.sendFile(__dirname + "/public/index.html");
-})
+});
 
 app.listen(8080, function() {
     console.log('Listening')
