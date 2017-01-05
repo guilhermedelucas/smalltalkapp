@@ -23,11 +23,12 @@ app.use(cookieSession({
 
 app.use(express.static('public'));
 
-app.use(function(req,res,next){
-   //  console.log(req.url);
-   //  console.log(req.params.tag);
-   //  console.log(req.method);
-   //  console.log(req.path);
+
+app.use(function(req,res, next){
+    console.log(req.url);
+    console.log(req.params.tag);
+    console.log(req.method);
+    console.log(req.path);
     next();
 });
 
@@ -128,9 +129,34 @@ app.post('/submit', function(req, res) {
     });
 });
 
-app.get('*', function(req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+app.get('/getpost=:id', function(req, res) {
+    db.query('SELECT * FROM comments WHERE post_id = $1',  [req.params.id]).then(function(comments){
+        db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post){
+        res.send({
+            comments: comments.rows,
+            postData: post.rows
+        });
+    })
+    }).catch(function(err){
+        console.log(err);
+        res.sendStatus(500);
+    });
+
+app.post('/addcomment', function(req, res){
+    console.log(req.body);
+    db.query('INSERT INTO comments (username, post_id, comment) VALUES ($1, $2, $3)', [req.body.username, req.body.post_id, req.body.comment]).then(function(){
+        res.json({
+            sucess: true
+        });
+    }).catch(function(err){
+        console.log(err);
+    })
+})
+
+app.get("*", function(req, res){
+    res.sendFile(__dirname + "/public/index.html");
 });
+
 
 app.listen(8080, function() {
     console.log('Listening')
