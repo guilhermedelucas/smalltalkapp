@@ -15,6 +15,16 @@ app.use(cookieSession({
    maxAge: 1000 * 60 * 60 * 24 * 14
 }));
 
+app.use(express.static('public'));
+
+
+app.use(function(req,res, next){
+    console.log(req.url);
+    console.log(req.params.tag);
+    console.log(req.method);
+    console.log(req.path);
+    next();
+});
 app.use(bodyParser.urlencoded({
     extended: false }));
 
