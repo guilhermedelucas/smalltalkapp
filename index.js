@@ -91,24 +91,6 @@ app.get('/home/:id', function(req, res) {
     });
 });
 
-app.get('/getpost=:id', function(req, res) {
-    db.query('SELECT * FROM comments WHERE post_id = $1 ORDER BY created_at DESC',  [req.params.id]).then(function(comments){
-        db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post){
-        res.send({
-            comments: comments.rows,
-            postData: post.rows
-        });
-    })
-    }).catch(function(err){
-        console.log(err);
-        res.sendStatus(500);
-    });
-});
-
-app.get("*", function(req, res){
-    res.sendFile(__dirname + "/public/index.html");
-});
-
 app.post('/submit', function(req, res) {
     var username = 'guilher';
     var title = req.body.title;
