@@ -7,7 +7,7 @@ CREATE TABLE users(
    username VARCHAR(225) not null UNIQUE,
    email VARCHAR(255) not null UNIQUE,
    password VARCHAR(255) not null,
-   about VARCHAR(255),
+   about VARCHAR(255), 
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -17,8 +17,11 @@ CREATE TABLE posts(
    title VARCHAR(255) NOT NULL,
    url TEXT,
    post TEXT,
+<<<<<<< HEAD
    total_comments INTEGER,
    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+=======
+>>>>>>> moaaz
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -30,7 +33,3 @@ CREATE TABLE comments(
    comment TEXT,
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-INSERT INTO posts (username, title, url) VALUES ('guilher', 'Teste', 'http://www.teste.com');
-INSERT INTO posts (username, title, url) VALUES ('spongebob', 'Another URL', 'http://www.globo.com');
-INSERT INTO posts (username, title, url) VALUES ('mattfewer', 'bla bla bla URL', 'http://www.bla.com');

@@ -5,41 +5,49 @@
       $rootScope.activetab = $location.path();
       //registration
       $scope.getRegistrationData = function() {
-         console.log($scope.registrationPassword)
-         if (!$scope.registerUsername || !$scope.registerEmail || !$scope.registerPassword || !$scope.confirmedPassword){
-               $scope.registerFaliure = true;
+
+         if (!$scope.register.registrationUsername || !$scope.register.registrationEmail || !$scope.register.registrationPassword || !$scope.register.confirmedPassword){
+            $scope.registerInfoRequired = true;
          } else {
-            var registeredUserData = {
-               username: $scope.registerUsername,
-               email: $scope.registerEmail,
-               password: $scope.registerPassword,
+            if ($scope.register.registrationPassword !== $scope.register.confirmedPassword) {
+               $scope.passwordsDoNotMatch = true;
+            } else {
+               $scope.passwordsDoNotMatch = undefined;
+               var registeredUserData = {
+                  username: $scope.register.registrationUsername,
+                  email: $scope.register.registrationEmail,
+                  password: $scope.register.registrationPassword
+               }
+               $http.post('/register', registeredUserData).then(function(res){
+                  // show err ( if email or password already exists) .. else redirect
+                  if(!res.data.err){
+                     $location.path('/about');
+                  } else {
+                     $scope.errEmailOrPassExists = res.data.err;
+                     res.config.data = '';
+                  }
+               })
             }
-            $http.post('/register', registeredUserData).then(function(res){
-               res.config.data = '';
-               //redirect $location
-            })
-         }
-         //check pasword matching
-         if ($scope.registerPassword !== $scope.confirmedPassword) {
-            $scope.passwordNotMatch = true;
-         } else {
-            $scope.passwordNotMatch = undefined;
          }
       }
 
       //login
       $scope.getLoginData = function() {
-         if(!$scope.loginUsername || !$scope.loginPassword) {
-            $scope.loginFaliure = true;
+         if(!$scope.login.loginUsername || !$scope.login.loginPassword) {
+            $scope.loginInfoRequired = true;
          } else {
             var loginUserData = {
-               username: $scope.loginUsername,
-               password: $scope.loginPassword
+               username: $scope.login.loginUsername,
+               password: $scope.login.loginPassword
             }
             $http.post('/login', loginUserData).then(function(res){
+               console.log(res); //get a "true" value when login info correct and a message when incorrect
+               //check pass on server and getting back response wheather it is valid or not
                res.config.data = '';
-               var message = res.data.message;
-               //redirect $location
+               $scope.incorrectLoginCredintials = res.data.error;
+               if (!res.data.error){
+                  $location.path("/about");
+               }
             });
          }
       }
