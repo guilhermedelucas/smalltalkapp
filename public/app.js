@@ -25,6 +25,11 @@ const app = angular.module("app",["ngRoute"]);
                 templateUrl : 'views/about.html',
                 controller  : 'AboutCtrl'
             })
+            // to the rote '/submit', load the template submit.html and the controller 'SubmitCtrl'
+            .when('/submit', {
+                templateUrl : 'views/submit.html',
+                controller  : 'SubmitCtrl'
+            })
 
             .when('/login', {
                 templateUrl : 'views/login.html',

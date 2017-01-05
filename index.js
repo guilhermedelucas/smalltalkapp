@@ -4,6 +4,11 @@ var password = require("./password.json");
 var spicedPg = require('spiced-pg');
 var db = spicedPg('postgres:' + password.dbUser + ':' + password.dbPassword + '@localhost:5432/smalltalk');
 
+app.use(bodyParser.urlencoded({
+    extended: false }));
+
+app.use(bodyParser.json({
+    extended: false }));
 var hashingAndChecking = require ('./password/checking-hashing');
 
 var bodyParser = require('body-parser');
@@ -14,11 +19,6 @@ app.use(cookieParser());
 app.use(cookieSession({
    secret: process.env.SESSION_SECRET || 'Help Dogs!',
    maxAge: 1000 * 60 * 60 * 24 * 14
-}));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-   extended: false
 }));
 
 app.use(express.static('public'));
@@ -106,6 +106,30 @@ app.get('/getpost=:id', function(req, res) {
 
 app.get("*", function(req, res){
     res.sendFile(__dirname + "/public/index.html");
+});
+
+app.post('/submit', function(req, res) {
+    var username = 'guilher';
+    var title = req.body.title;
+    var url = req.body.url;
+    var text = req.body.text;
+    if (!url.toLowerCase().startsWith('http')){
+        url = 'http://' + url;
+    }
+    var query = 'INSERT INTO posts (username, title, url, post) VALUES ($1, $2, $3, $4) RETURNING *;';
+    var parameters = [username, title, url, text];
+    db.query(query, parameters).then(function(data){
+        res.json({
+            posts: data.rows
+        });
+    }).catch(function(err){
+        console.log(err);
+        res.sendStatus(500);
+    });
+});
+
+app.get('*', function(req, res) {
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 app.listen(8080, function() {

@@ -18,6 +18,7 @@ CREATE TABLE posts(
    url TEXT,
    post TEXT,
    total_comments INTEGER,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

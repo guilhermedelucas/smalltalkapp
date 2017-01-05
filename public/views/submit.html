@@ -1,0 +1,12 @@
+<div id="submit-box" ng-controller='SubmitCtrl'>
+    <form>
+        Title:<br>
+        <input id=title-submit value='' ng-model='title'><br>
+        URL:<br>
+        <input id=url-submit value='' ng-model='url'><br>
+        Text:<br>
+        <textarea id=text-submit ng-model='text'></textarea><br>
+        <button ng-click='submit(title, url, text)' id=post-submit>SUBMIT</button>
+    </form>
+        <p ng-show='submiterror' class='ng-hide'>Please complete all fields</p>
+</div>
