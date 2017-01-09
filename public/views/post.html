@@ -1,15 +1,26 @@
-<div style="margin-top:15px; margin-left:10px">
-    <h1><a href="{{postData[0].url}}"> {{postData[0].title}} </a> </h1>
-    <p> <a href="/username={{postData[0].username}}">{{postData[0].username}} </a> | Total Comments {{postData[0].total_comments}} </p>
-    <p> Posted about {{postData[0].created_at}} </p>
+
+<div class="container-fluid">
+    <div class="col-md-6 offset-md-3">
+        <div class='panel panel-default'>
+            <li class="panel-body">
+                <a href="{{postData[0].url}}">
+                    <h3> {{postData[0].title}}  </h3> </a>
+            </li>
+            <li class="panel-footer clearfix"><a href="/username={{postData[0].username}}">{{postData[0].username}} </a> | Total Comments {{postData[0].total_comments}} Posted about {{postData[0].created_at}} </li>
+        </div>
+    </div>
+
+    <div class="col-md-8 col-xs-10 col-centered">
+        <textarea ng-model="newComment" rows="4" cols="50" placeholder="Type your comment" class="form-control"> </textarea>
+        <button ng-click="submitComment()" class="btn btn-primary">Submit</button>
+    </div>
+
+    <div class="col-md-8 col-xs-10 col-centered">
+        <div id="display-comments"></div>
+        <div ng-click="morePage()" class="btn btn-primary">Show more posts</div>
+    </div>
 </div>
 
-<textarea ng-model="newComment" rows="4" cols="50" placeholder="Type your comment"> </textarea> </br>
-<button ng-click="submitComment()">Submit</button>
-
-
-<div id="display-comments" style="margin-top:15px; margin-left:10px"></div>
-<div ng-click="morePage()">Show more posts</div>
 
 
 <!-- Trying to make work on angular -->
@@ -23,5 +34,4 @@
     <span id=commentId={{comments.id}}></span> -->
         <!-- <ul ng-if="comments.reply" ng-repeat="n in comments.reply track by $index" style="margin-left:50px">
             <li> reply : {{comments.reply[$index]}}</li>
-        </ul> --> -->
-
+        </ul> -->

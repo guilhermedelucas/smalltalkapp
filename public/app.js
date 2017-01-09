@@ -26,7 +26,7 @@ const app = angular.module("app",["ngRoute"]);
                 controller  : 'SubmitCtrl'
             })
 
-            .when('/login', {
+            .when('/register', {
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
             })

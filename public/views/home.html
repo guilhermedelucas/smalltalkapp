@@ -1,11 +1,25 @@
-<div id="post-box" ng-if="posts" ng-repeat="posts in posts" style="margin-top:15px; margin-left:10px">
-    <span class="rank">{{$index + 1}}</span>
-    <p class="title">
-        <a href={{posts.url}}> {{posts.title}} </a> </p>
-    <p class="tagline">
-        <span class="score" id="{{posts.id}}_score"> Post #{{posts.id}}</span>
-        by <a href="username={{posts.username}}">{{posts.username}}</a>
-        about <span class="age">{{posts.created_at}}</span>
-        <span class="comments_number"><a href="/post={{posts.id}}" ng-click="getPostInfo({posts})"> {{posts.total_comments}} comments</a></span>
+<div ng-show="!logged">
+    <div ng-include src="'/views/navbar-login.html'"></div>
 </div>
-<div ng-click="morePage()">Show more posts</div>
+
+<div ng-show="logged">
+    <div ng-include src="'/views/navbar-user.html'"></div>
+</div>
+
+
+
+
+<div class="container-fluid bgcolor">
+    <div id="post-box" ng-if="posts" ng-repeat="posts in posts" class="col-md-12 col-xs-12">
+        <ul id="list">
+        <div class='panel panel-default'>
+            <li class="panel-body"><a href={{posts.url}}> <h3>{{posts.title}}</h3> </a></li>
+            <div class="panel-footer clearfix">
+                <li class="tagline"> <span class="score" id="{{posts.id}}_score"> Post #{{posts.id}}</span> by <a href="username={{posts.username}}">{{posts.username}}</a>
+            about <span class="label label-primary">{{posts.created_at}}</span> <span class="comments_number"><a href="/post={{posts.id}}" ng-click="getPostInfo({posts})"> <span class="badge">{{posts.total_comments}}</span> comments</a></span></div></div>
+        </ul>
+    </div>
+    <div class="col-xs-12 text-right">
+        <button type="button" class="btn btn-primary" ng-click="morePage()">Show more posts</button>
+    </div>
+</div>

@@ -19,6 +19,7 @@
   "homepage": "https://github.com/spicedacademy/paprika-imageboard#readme",
   "dependencies": {
     "basic-auth": "^1.1.0",
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.15.2",
     "connect-redis": "^3.1.0",
     "cookie-parser": "^1.4.3",
@@ -28,6 +29,7 @@
     "express-session": "^1.14.1",
     "multer": "^1.2.0",
     "redis": "^2.6.2",
+    "request": "^2.79.0",
     "spiced-pg": "github:spicedacademy/spiced-pg"
   }
 }

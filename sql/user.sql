@@ -7,7 +7,7 @@ CREATE TABLE users(
    username VARCHAR(225) not null UNIQUE,
    email VARCHAR(255) not null UNIQUE,
    password VARCHAR(255) not null,
-   about VARCHAR(255), 
+   about VARCHAR(255),
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -17,11 +17,8 @@ CREATE TABLE posts(
    title VARCHAR(255) NOT NULL,
    url TEXT,
    post TEXT,
-<<<<<<< HEAD
    total_comments INTEGER,
    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-=======
->>>>>>> moaaz
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
