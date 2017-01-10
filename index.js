@@ -50,8 +50,22 @@ setInterval(function() {
 }, 1000000);
 
 
-app.post('/submit', function(req, res) {
-    var username = 'guilher';
+function checkSession(req, res, next) {
+    if (req.session.username) {
+        res.json({
+            username: req.session.username
+        });
+    } else {
+        res.redirect("/");
+    }
+    next();
+}
+
+app.get('/submit/checksession', checkSession);
+
+app.post('/submit', checkSession, function(req, res) {
+    console.log(req.body);
+    var username = req.body.username;
     var title = req.body.title;
     var url = req.body.url;
     var text = req.body.text;
@@ -80,18 +94,17 @@ app.get('/logout', function(req, res){
 
 
 app.get('/profile', function(req, res){
-    if(req.session.username) {
-        db.query('SELECT username, email, about FROM users WHERE username = $1', [req.session.username]).then(function(data){
-            res.json({
-                userData: data.rows,
-                session: req.session.username
-            })
+    if (req.session.username) {
+    db.query('SELECT username, email, about FROM users WHERE username = $1', [req.session.username]).then(function(data){
+        res.json({
+            userData: data.rows,
+            session: req.session.username
         })
-    }
-    else {
-        res.redirect("/");
-    }
-})
+    })
+    } else {
+    res.redirect("/");
+    };
+});
 
 app.get('/home/:id', function(req, res) {
     var sessionUsername;
@@ -121,17 +134,32 @@ app.get('/home/:id', function(req, res) {
 });
 
 app.get('/getpost=:id', function(req, res) {
+    if (req.session.username) {
     db.query('SELECT * FROM comments WHERE post_id = $1', [req.params.id]).then(function(comments) {
         db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post) {
             res.send({
                 comments: comments.rows,
-                postData: post.rows
+                postData: post.rows,
+                username: req.session.username
             });
-        })
+        });
     }).catch(function(err) {
         console.log(err);
         res.sendStatus(500);
     });
+    } else {
+        db.query('SELECT * FROM comments WHERE post_id = $1', [req.params.id]).then(function(comments) {
+            db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post) {
+                res.send({
+                    comments: comments.rows,
+                    postData: post.rows,
+                });
+            });
+        }).catch(function(err) {
+            console.log(err);
+            res.sendStatus(500);
+        });
+    }
 });
 
 app.post('/addcomment', function(req, res) {
