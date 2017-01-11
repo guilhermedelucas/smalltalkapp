@@ -20,7 +20,7 @@
                 };
                 $http.post('/submit', data).then(function(resp){
                     $scope.posts = resp.data.posts;
-                    $location.path('/home');
+                    $location.path('/:0');
                 });
             }
         };

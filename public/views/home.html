@@ -15,6 +15,7 @@
         <div class='panel panel-default'>
             <li class="panel-body"><a href={{posts.url}}> <h3>{{posts.title}}</h3> </a></li>
             <div class="panel-footer clearfix">
+                <img src={{posts.imageurl}} />
                 <li class="tagline"> <span class="score" id="{{posts.id}}_score"> Post #{{posts.id}}</span> by <a href="username={{posts.username}}">{{posts.username}}</a>
             about <span class="label label-primary">{{posts.created_at}}</span> <span class="comments_number"><a href="/post={{posts.id}}" ng-click="getPostInfo({posts})"> <span class="badge">{{posts.total_comments}}</span> comments</a></span></div></div>
         </ul>

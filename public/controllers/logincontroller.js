@@ -63,6 +63,76 @@
           })
       }
 
+      $scope.facebookLogin = function() {
+          FB.login(function(res) {
+              if (res.status === 'connected') {
+                  datarequest()
+              } else {
+                  //need to notify
+                  console.log('loginerror');
+              }
+          }),{scope: 'public_profile,email'};
+          function datarequest() {
+              FB.api('me?fields=name,email', function(res){
+                  var data = {
+                      email: res.email,
+                      name: res.name
+                  };
+                  $http.post('/sociallogin', data).then(function(res){
+                      res.config.data = '';
+                      if (!res.data.error){
+                          //need to store username
+                          $location.path("/about");
+                      }
+                  });
+              });
+          }
+      };
 
-   })
+      $scope.googlePlusLogin = function() {
+    //       console.log('runn');
+    //       gapi.load('auth2', function(){
+    //         auth2 = gapi.auth2.init({
+    //           client_id: '11202645552-r7locp23o4sb4k70skpsnk8mnk9uviid.apps.googleusercontent.com',
+    //           cookiepolicy: 'single_host_origin',
+    //       })
+    //   }).then(function(res){
+    //       console.log(res);
+    //   });
+    gapi.auth2.init({
+              client_id: '11202645552-r7locp23o4sb4k70skpsnk8mnk9uviid.apps.googleusercontent.com',
+              cookiepolicy: 'single_host_origin',
+          }).then(function(res){
+          console.log(res);
+      });
+            // function attachSignin() {
+            //     auth2(
+            //         function(googleUser) {
+            //             console.log(googleUser.getBasicProfile());
+            //         }, function(error) {
+            //             alert(JSON.stringify(error, undefined, 2));
+            //         });
+            // }
+            // attachSignin();
+
+
+        //   function datarequest() {
+        //       FB.api('me?fields=name,email', function(res){
+        //           var data = {
+        //               email: res.email,
+        //               name: res.name
+        //           };
+        //           $http.post('/sociallogin', data).then(function(res){
+        //               res.config.data = '';
+        //               if (!res.data.error){
+        //                   //need to store username
+        //                   $location.path("/about");
+        //               }
+        //           });
+        //       });
+        //   }
+      };
+
+
+   });
 })();

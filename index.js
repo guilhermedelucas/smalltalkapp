@@ -10,7 +10,8 @@ var cookieParser = require('cookie-parser');
 var hashingAndChecking = require('./password/checking-hashing');
 var http = require('http');
 var request = require('request');
-var fs = require('fs')
+var fs = require('fs');
+var cheerio = require('cheerio');
 
 app.use(cookieParser());
 app.use(cookieSession({
@@ -64,7 +65,6 @@ function checkSession(req, res, next) {
 app.get('/submit/checksession', checkSession);
 
 app.post('/submit', checkSession, function(req, res) {
-    console.log(req.body);
     var username = req.body.username;
     var title = req.body.title;
     var url = req.body.url;
@@ -72,16 +72,31 @@ app.post('/submit', checkSession, function(req, res) {
     if (!url.toLowerCase().startsWith('http')) {
         url = 'http://' + url;
     }
-    var query = 'INSERT INTO posts (username, title, url, post) VALUES ($1, $2, $3, $4) RETURNING *;';
-    var parameters = [username, title, url, text];
-    db.query(query, parameters).then(function(data) {
-        res.json({
-            posts: data.rows
-        });
-    }).catch(function(err) {
-        console.log(err);
-        res.sendStatus(500);
+    request(url, function (error, response, html) {
+        if (!error && response.statusCode == 200) {
+            var $ = cheerio.load(html);
+            if ($('meta[property="og:image"]').attr('content')) {
+                var imageUrl = $('meta[property="og:image"]').attr('content');
+            } else {
+                imageUrl = './images/PH/ph.jpg';
+            }
+        } else {
+            imageUrl = './images/PH/ph.jpg';
+        }
+        postentry(imageUrl);
     });
+    function postentry(imageUrl) {
+        var query = 'INSERT INTO posts (username, title, url, post, imageurl) VALUES ($1, $2, $3, $4, $5) RETURNING *;';
+        var parameters = [username, title, url, text, imageUrl];
+        db.query(query, parameters).then(function(data) {
+            res.json({
+                posts: data.rows
+            });
+        }).catch(function(err) {
+            console.log(err);
+            res.sendStatus(500);
+        });
+    }
 });
 
 
@@ -94,6 +109,7 @@ app.get('/logout', function(req, res){
 
 
 app.get('/profile', function(req, res){
+    console.log(req.session.username);
     if (req.session.username) {
     db.query('SELECT username, email, about FROM users WHERE username = $1', [req.session.username]).then(function(data){
         res.json({
@@ -234,9 +250,50 @@ app.post('/login', function(req, res) {
     });
 });
 
-app.get('*', function(req, res) {
-    res.sendFile(__dirname + "/public/index.html");
+app.post('/sociallogin', function(req, res) {
+    var email = req.body.email;
+    var name = req.body.name;
+    var query = 'SELECT username FROM users WHERE email=$1;';
+    var parameters = [email];
+    db.query(query, parameters).then(function(data){
+        if (data.rows[0]){
+            req.session.username = data.rows[0].username;
+            res.json({
+                username: data.rows[0]
+            });
+        } else {
+            name = name.replace(/ /g,'');
+            usernameQuery(name, email, res);
+        }
+    });
+    function usernameQuery(username, email, res) {
+        var unQuery = 'SELECT * FROM users WHERE username=$1;';
+        var unParameters = [username];
+        db.query(unQuery, unParameters).then(function(data) {
+            if (data.rows[0]) {
+                username = username + (Math.floor(Math.random()*10)).toString();
+                usernameQuery(username);
+            } else {
+                var userInsert = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *;';
+                var password = Math.floor(Math.random() * 1000000000).toString();
+                //need to hash password
+                parameters = [username, email, password];
+                db.query(userInsert, parameters).then(function() {
+                    req.session.username = data.rows[0].username;
+                    res.json({
+                        username: username
+                    });
+                }).catch(function(err){
+                    console.log(err);
+                });
+            }
+        });
+    }
 });
+
+// app.get('*', function(req, res) {
+//     res.sendFile(__dirname + "/public/index.html");
+// });
 
 app.listen(8080, function() {
     console.log('Listening')

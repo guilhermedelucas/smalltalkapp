@@ -17,8 +17,9 @@ CREATE TABLE posts(
    title VARCHAR(255) NOT NULL,
    url TEXT,
    post TEXT,
+   imageurl TEXT,
    total_comments INTEGER,
-   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
