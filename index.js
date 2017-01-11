@@ -99,8 +99,45 @@ app.post('/submit', checkSession, function(req, res) {
     }
 });
 
+app.get('/user/getposts', function(req, res) {
+    db.query("SELECT * FROM posts WHERE username = $1", [req.session.username]).then(function(data) {
+        console.log(data);
+        res.json({
+            userPosts: data.rows,
+            session: req.session.username
+        })
+    }).catch(function(err) {
+        console.log(err);
+        res.sendStatus(500);
+    });
 
-app.get('/logout', function(req, res){
+    console.log(req.params.id);
+})
+
+app.post('/user/deletepost', function(req, res) {
+    var deleteId = req.body.deleteId;
+    db.query('DELETE FROM posts WHERE id = $1', [deleteId]).then(function() {
+        return db.query('DELETE FROM comments WHERE post_id = $1', [deleteId]).then(function() {
+            res.json({
+                sucess: true
+            });
+        })
+    }).catch(function(err) {
+        console.log(err);
+    })
+});
+
+app.post('/submit/reply', function(req, res) {
+    db.query("INSERT INTO comments (username, post_id, comment_id, comment) VALues ($1, $2, $3, $4)", [req.session.username, req.body.post_id, req.body.comment_id, req.body.comment]).then(function() {
+        res.json({
+            sucess: true
+        })
+    }).catch(function(err) {
+        console.log(err);
+    })
+})
+
+app.get('/logout', function(req, res) {
     req.session = null;
     res.json({
         logout: "sucess"
@@ -108,17 +145,16 @@ app.get('/logout', function(req, res){
 });
 
 
-app.get('/profile', function(req, res){
-    console.log(req.session.username);
+app.get('/profile', function(req, res) {
     if (req.session.username) {
-    db.query('SELECT username, email, about FROM users WHERE username = $1', [req.session.username]).then(function(data){
-        res.json({
-            userData: data.rows,
-            session: req.session.username
+        db.query('SELECT username, email, about FROM users WHERE username = $1', [req.session.username]).then(function(data) {
+            res.json({
+                userData: data.rows,
+                session: req.session.username
+            })
         })
-    })
     } else {
-    res.redirect("/");
+        res.redirect("/");
     };
 });
 
@@ -126,21 +162,27 @@ app.get('/home/:id', function(req, res) {
     var sessionUsername;
     if (req.session.username) {
         db.query('SELECT * FROM posts ORDER BY created_at DESC LIMIT $1', [10 + req.params.id * 10]).then(function(data) {
+            return db.query('SELECT  post_id, COUNT (post_id) FROM  comments GROUP BY  post_id;').then(function(counter){
             console.log("hello");
             res.json({
                 posts: data.rows,
+                totalPosts: counter.rows,
                 session: req.session.username
             });
+            })
         }).catch(function(err) {
             console.log(err);
             res.sendStatus(500);
         });
     } else {
         db.query('SELECT * FROM posts ORDER BY created_at DESC LIMIT $1', [10 + req.params.id * 10]).then(function(data) {
+            return db.query('SELECT  post_id, COUNT (post_id) FROM  comments GROUP BY  post_id;').then(function(counter){
             console.log("hello");
             res.json({
-                posts: data.rows
+                posts: data.rows,
+                totalPosts: counter.rows,
             });
+            })
         }).catch(function(err) {
             console.log(err);
             res.sendStatus(500);
@@ -151,18 +193,18 @@ app.get('/home/:id', function(req, res) {
 
 app.get('/getpost=:id', function(req, res) {
     if (req.session.username) {
-    db.query('SELECT * FROM comments WHERE post_id = $1', [req.params.id]).then(function(comments) {
-        db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post) {
-            res.send({
-                comments: comments.rows,
-                postData: post.rows,
-                username: req.session.username
+        db.query('SELECT * FROM comments WHERE post_id = $1', [req.params.id]).then(function(comments) {
+            db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post) {
+                res.send({
+                    comments: comments.rows,
+                    postData: post.rows,
+                    username: req.session.username
+                });
             });
+        }).catch(function(err) {
+            console.log(err);
+            res.sendStatus(500);
         });
-    }).catch(function(err) {
-        console.log(err);
-        res.sendStatus(500);
-    });
     } else {
         db.query('SELECT * FROM comments WHERE post_id = $1', [req.params.id]).then(function(comments) {
             db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post) {
@@ -179,7 +221,6 @@ app.get('/getpost=:id', function(req, res) {
 });
 
 app.post('/addcomment', function(req, res) {
-    console.log(req.body);
     db.query('INSERT INTO comments (username, post_id, comment) VALUES ($1, $2, $3)', [req.body.username, req.body.post_id, req.body.comment]).then(function() {
         res.json({
             sucess: true
@@ -251,6 +292,7 @@ app.post('/login', function(req, res) {
 });
 
 app.post('/sociallogin', function(req, res) {
+    console.log(req.body.email);
     var email = req.body.email;
     var name = req.body.name;
     var query = 'SELECT username FROM users WHERE email=$1;';
@@ -290,10 +332,6 @@ app.post('/sociallogin', function(req, res) {
         });
     }
 });
-
-// app.get('*', function(req, res) {
-//     res.sendFile(__dirname + "/public/index.html");
-// });
 
 app.listen(8080, function() {
     console.log('Listening')

@@ -12,8 +12,13 @@ const app = angular.module("app",["ngRoute"]);
             })
 
             .when('/post:id', {
-                templateUrl: "views/post.html",
-                controller: "PostCtrl"
+                templateUrl: 'views/post.html',
+                controller: 'PostCtrl'
+            })
+
+            .when('/userposts=:id', {
+                templateUrl: 'views/userpost.html',
+                controller: 'UserPostsCtrl'
             })
 
             .when('/about', {

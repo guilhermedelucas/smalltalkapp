@@ -3,28 +3,37 @@
     app.controller('HomeCtrl', function($rootScope, $location, $scope, $http) {
         //login//
         //display posts//
-        $scope.counter = 0;
+        $scope.pageCounter = 0;
         $rootScope.activetab = $location.path();
-        queryRequest($scope, $http);
+        queryHomeRequest($scope, $http);
         $scope.morePage = function() {
-            $scope.counter++;
-            queryRequest($scope, $http);
-        }
+            $scope.pageCounter++;
+            queryHomeRequest($scope, $http);
+        };
         $scope.getPostInfo = function(post) {
             $rootScope.postData = post;
-        }
+        };
     });
 })();
 
-var queryRequest = function($scope, $http) {
-    $http.get('/home/' + $scope.counter).then(function(resp) {
+var queryHomeRequest = function($scope, $http) {
+    $http.get('/home/' + $scope.pageCounter).then(function(resp) {
         $scope.logged = false;
         if (resp.data.session) {
             $scope.username = resp.data.session;
             $scope.logged = true;
         }
-        console.log($scope.logged);
+        //add counter to posts
+        $scope.counter = resp.data.totalPosts;
         $scope.posts = resp.data.posts;
+        //add counter to posts data
+        $scope.posts.forEach(function(element) {
+            $scope.counter.forEach(function(el, index) {
+                if (element.id == el.post_id) {
+                    element.counter = parseInt(el.count);
+                }
+            });
+        })
         $scope.posts.map(function(element) {
             var currentTime = new Date();
             var postTime = new Date(element.created_at.replace(' ', 'T'));

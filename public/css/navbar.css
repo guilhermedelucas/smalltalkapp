@@ -1,34 +1,39 @@
-body{
-    background:url('../images/background.jpg');
+body {
+    background: url('../images/background.jpg');
     /*background:url('https://source.unsplash.com/random/1440x900');*/
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    padding:30px;
+    padding: 30px;
     overflow: auto;
 }
 
-#login-dp{
+#login-dp {
     min-width: 250px;
-    padding: 14px 14px 0;
-    overflow:hidden;
-    background-color:rgba(255,255,255,.8);
+    padding: 14px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, .8);
 }
-#login-dp .help-block{
-    font-size:12px
+
+#login-dp .help-block {
+    font-size: 12px
 }
-#login-dp .bottom{
-    background-color:rgba(255,255,255,.8);
-    border-top:1px solid #ddd;
-    clear:both;
-    padding:14px;
+
+#login-dp .bottom {
+    background-color: rgba(255, 255, 255, .8);
+    border-top: 1px solid #ddd;
+    clear: both;
+    padding: 14px;
 }
-#login-dp .social-buttons{
-    margin:13px 0
+
+#login-dp .social-buttons {
+    margin: 13px 0
 }
-#login-dp .social-buttons a{
+
+#login-dp .social-buttons a {
     width: 50%;
 }
+
 #login-dp .form-group {
     margin-bottom: 10px;
 }
@@ -37,31 +42,64 @@ body{
     margin-top: 3px;
 }
 
-.btn-fb{
-    color: #fff;
-    background-color:#3b5998;
+.dropdown-menu>li>a {
+    display: block;
+    padding: 20px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    transition: all .25s;
 }
 
-.btn-fb:hover{
-    color: #fff;
-    background-color:#496ebc
+.dropdown-menu>li>a:hover {
+    background-color: rgb(54, 54, 54);
+    font-weight: bold;
+    color: white;
 }
-.btn-gplus{
-    color: #fff;
-    background-color:#d34836;
+
+.dropdown-menu .divider {
+    height: 1px;
+    margin: 9px 0;
+    overflow: hidden;
 }
-.btn-gplus:hover{
-    color: #fff;
-    background-color:#2d2d2d;
+
+.dropdown-menu .divider {
+    height: 1px;
+    margin: 0px;
+    overflow: hidden;
+    background-color: black;
 }
-@media(max-width:768px){
-    #login-dp{
+
+.btn-fb {
+    color: #fff;
+    background-color: #3b5998;
+}
+
+.btn-fb:hover {
+    color: #fff;
+    background-color: #496ebc
+}
+
+.btn-gplus {
+    color: #fff;
+    background-color: #d34836;
+}
+
+.btn-gplus:hover {
+    color: #fff;
+    background-color: #2d2d2d;
+}
+
+@media(max-width:768px) {
+    #login-dp {
         background-color: inherit;
         color: #fff;
     }
-    #login-dp .bottom{
+    #login-dp .bottom {
         background-color: inherit;
-        border-top:0 none;
+        border-top: 0 none;
     }
 }
 
@@ -76,7 +114,7 @@ body{
     border-radius: 10px;
     overflow: auto;
     height: 100vh;
-     /*width: 100vh; */
+    /*width: 100vh; */
 }
 
 .panel {

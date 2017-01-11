@@ -1,37 +1,90 @@
+<div ng-show="!logged">
+    <div ng-include src="'/views/navbar-login.html'"></div>
+</div>
 
-<div class="container-fluid">
-    <div class="col-md-6 offset-md-3">
-        <div class='panel panel-default'>
-            <li class="panel-body">
-                <a href="{{postData[0].url}}">
-                    <h3> {{postData[0].title}}  </h3> </a>
-            </li>
-            <li class="panel-footer clearfix"><a href="/username={{postData[0].username}}">{{postData[0].username}} </a> | Total Comments {{postData[0].total_comments}} Posted about {{postData[0].created_at}} </li>
+<div ng-show="logged">
+    <div ng-include src="'/views/navbar-user.html'"></div>
+</div>
+
+
+
+<div class="container-fluid  bgcolor">
+    <div class="row">
+        <div class="col-md-12">
+            <div class='panel panel-default'>
+                <li class="panel-body">
+                    <a href="{{postData[0].url}}">
+                        <h3> {{postData[0].title}}  </h3> </a>
+                </li>
+                <li class="panel-footer clearfix">Posted by <a href="/username={{postData[0].username}}">{{postData[0].username}} </a> | Total Comments {{postData[0].total_comments}} Posted about <span class="label label-primary">{{postData[0].created_at}}</span> </li>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-8 col-xs-10 col-centered">
-        <textarea ng-model="newComment" rows="4" cols="50" placeholder="Type your comment" class="form-control"> </textarea>
-        <button ng-click="submitComment()" class="btn btn-primary">Submit</button>
+    <div class="row">
+        <div class="col-md-4 col-xs-6 col-centered" ng-show="logged">
+            <textarea ng-model="newComment" rows="4" cols="50" placeholder="Type your comment" class="form-control"> </textarea>
+            <button ng-click="submitComment()" class="btn btn-primary">Submit</button>
+        </div>
     </div>
 
-    <div class="col-md-8 col-xs-10 col-centered">
+    <div class="divider" style="margin:30px 0px"></div>
+    <h1 class="white-text">Comments</h1>
+
+
+    <!-- <div id="display-comments"> -->
+        <!-- <div class='panel panel-default'>
+            <li class="panel-body">
+                <p>{{comments.comment}}</p>
+                <li class="panel-footer clearfix">
+                        Posted by <a href="/username={{comments.username}}"> <b>{{comments.username}}</b></a> about <span class="label label-primary">{{comments.created_at}}</span><span class="label label-success" ng-click="showDetails = !showDetails" style="cursor:mouse; ">reply</span>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-6 col-centered" ng-show="showDetails">
+                            <textarea ng-model="newComment" rows="4" cols="50" placeholder="Type your comment" class="form-control" style="margin-top: 10px"> </textarea>
+                            <button ng-click="submitComment()" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </li>
+        <ul ng-if="comments.reply" ng-repeat="n in comments.reply track by $index" style="margin-left:50px">
+            <div class="panel panel-default">
+            <li class="panel-body"> {{comments.reply[$index].comment}}</li>
+            <div class="panel-footer clearfix"> Posted by {{comments.reply[$index].username}} at <span class="label label-primary">{{comments.reply[$index].created_at}}</span>
+            </div>
+        </div>
+        </ul> -->
+
+    <div class="col-md-12">
         <div id="display-comments"></div>
         <div ng-click="morePage()" class="btn btn-primary">Show more posts</div>
     </div>
 </div>
 
+</div>
 
 
-<!-- Trying to make work on angular -->
-<!--
-<div id="display-comments" ng-if="!comments.comment_id" ng-repeat="comments in comments" style="margin-top:15px; margin-left:10px">
-    <span class="rank">{{$index + 1}}</span>
-    <p class="title">
-    <a href="/username={{comments.username}}">{{comments.username}} </a></p>
-    <h3>{{comments.comment}}</h3>
-    <span class="age">about {{comments.created_at}}</span>
-    <span id=commentId={{comments.id}}></span> -->
-        <!-- <ul ng-if="comments.reply" ng-repeat="n in comments.reply track by $index" style="margin-left:50px">
-            <li> reply : {{comments.reply[$index]}}</li>
-        </ul> -->
+
+
+<!-- <script type="text/ng-template" id="field_renderer.html">
+    {{comment.comment}}
+  <ul ng-if="replies.Fields">
+      <li ng-repeat="replies in replies.fields"
+         ng-include="'field_renderer.html'">
+      </li>
+  </ul>
+</script>
+
+<ul>
+  <li ng-repeat="comment in comments" ng-include="'field_renderer.html'"></li>
+</ul> -->
+
+
+<!-- <script type="text/ng-template" id="field_renderer.html">
+    {{data.label}}
+    <ul>
+        <li ng-repeat="field in data.fields" ng-include="'field_renderer.html'"></li>
+    </ul>
+</script>
+
+<ul ng-controller="NestedFormCtrl">
+    <li ng-repeat="field in formData" ng-include="'field_renderer.html'"></li>
+</ul> -->

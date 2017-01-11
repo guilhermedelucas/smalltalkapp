@@ -8,7 +8,6 @@
 
         $scope.logged = true;
         $scope.submit = (formTitle, formUrl, formText) => {
-            console.log(formTitle, formUrl, formText);
             if (!formTitle && (!formUrl || !formText)) {
                 $scope.submiterror = true;
             } else {

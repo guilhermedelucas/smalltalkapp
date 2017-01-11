@@ -6,6 +6,10 @@
    text-decoration: none;
 }
 
+::-webkit-scrollbar {
+display: none;
+}
+
 .main-container {
    width: 1100px;
    margin: 20px auto;
@@ -46,6 +50,9 @@ button[disabled="disabled"]{
   overflow: hidden;
   background-color: rgb(159, 159, 159);
 }
+.black {
+    color: black;
+}
 
 .col-centered {
     display:inline-block;
@@ -54,4 +61,16 @@ button[disabled="disabled"]{
     text-align:left;
     /* inline-block space fix */
     margin-right:-4px;
+}
+
+.label {
+    margin: 0px 5px;
+}
+
+.btn {
+    margin: 10px 0px;
+}
+
+.white-text {
+    color: white;
 }

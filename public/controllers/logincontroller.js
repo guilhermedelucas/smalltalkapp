@@ -78,10 +78,13 @@
                       email: res.email,
                       name: res.name
                   };
+                  console.log(data);
                   $http.post('/sociallogin', data).then(function(res){
                       res.config.data = '';
                       if (!res.data.error){
                           //need to store username
+                          $scope.username = res.data.username;
+                          $scope.logged = true;
                           $location.path("/about");
                       }
                   });
