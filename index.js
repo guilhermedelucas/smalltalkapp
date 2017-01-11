@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var password = require("./password.json");
 var spicedPg = require('spiced-pg');
-var db = spicedPg('postgres:' + password.dbUser + ':' + password.dbPassword + '@localhost:5432/smalltalk');
+var db = spicedPg(process.env.DATABASE_URL || 'postgres:' + password.dbUser + ':' + password.dbPassword + '@localhost:5432/smalltalk');
 var hashingAndChecking = require('./password/checking-hashing');
 var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
@@ -14,6 +14,8 @@ var fs = require('fs');
 var cheerio = require('cheerio');
 // var zxcvbn = require('zxcvbn');
 
+
+postgres://${config.postgresUser}:${config.postgresPassword}@localhost:5432/${config.postgresDb}
 app.use(cookieParser());
 app.use(cookieSession({
     secret: process.env.SESSION_SECRET || 'Help Dogs!',
@@ -324,6 +326,6 @@ app.get('*', function(req, res) {
     res.sendFile(__dirname + "/public/index.html");
 });
 
-app.listen(8080, function() {
+app.listen(process.env.PORT || 8080, function() {
     console.log('Listening')
 });
