@@ -12,6 +12,7 @@ var http = require('http');
 var request = require('request');
 var fs = require('fs');
 var cheerio = require('cheerio');
+// var zxcvbn = require('zxcvbn');
 
 app.use(cookieParser());
 app.use(cookieSession({
@@ -51,7 +52,7 @@ setInterval(function() {
 }, 1000000);
 
 
-function checkSession(req, res, next) {
+app.get('/submit/checksession', function(req, res){
     if (req.session.username) {
         res.json({
             username: req.session.username
@@ -59,16 +60,14 @@ function checkSession(req, res, next) {
     } else {
         res.redirect("/");
     }
-    next();
-}
+});
 
-app.get('/submit/checksession', checkSession);
-
-app.post('/submit', checkSession, function(req, res) {
+app.post('/submit', function(req, res) {
     var username = req.body.username;
     var title = req.body.title;
-    var url = req.body.url;
-    var text = req.body.text;
+    var url = req.body.url || "";
+    var text = req.body.text || "";
+    console.log("this is the url " +  url );
     if (!url.toLowerCase().startsWith('http')) {
         url = 'http://' + url;
     }
@@ -90,10 +89,13 @@ app.post('/submit', checkSession, function(req, res) {
         var parameters = [username, title, url, text, imageUrl];
         db.query(query, parameters).then(function(data) {
             res.json({
-                posts: data.rows
+                sucess: true
             });
         }).catch(function(err) {
             console.log(err);
+            res.json({
+                sucess: false
+            });
             res.sendStatus(500);
         });
     }
@@ -127,15 +129,20 @@ app.post('/user/deletepost', function(req, res) {
     })
 });
 
-app.post('/submit/reply', function(req, res) {
-    db.query("INSERT INTO comments (username, post_id, comment_id, comment) VALues ($1, $2, $3, $4)", [req.session.username, req.body.post_id, req.body.comment_id, req.body.comment]).then(function() {
+app.post('/submit/reply', function(req, res){
+    console.log(req.session);
+    db.query('INSERT INTO comments (username, post_id, comment_id, comment) VALUES ($1, $2, $3, $4)', [req.session.username, req.body.post_id, req.body.comment_id, req.body.comment]).then(function(){
         res.json({
             sucess: true
+        });
+    }).catch(function(err){
+        res.json({
+            sucess: false
         })
-    }).catch(function(err) {
         console.log(err);
-    })
-})
+    });
+});
+
 
 app.get('/logout', function(req, res) {
     req.session = null;
@@ -155,19 +162,40 @@ app.get('/profile', function(req, res) {
         })
     } else {
         res.redirect("/");
-    };
+    }
 });
+
+app.post("/profile/username", function(req, res) {
+    db.query('SELECT EXISTS (SELECT username FROM users WHERE username = $1)', [req.body.username]).then(function(data) {
+        res.json({
+            usernameExists: data.rows[0].exists
+        })
+    }).catch(function(err) {
+        console.log(err);
+    })
+})
+
+app.post("/profile/email", function(req, res) {
+    db.query('SELECT EXISTS (SELECT email FROM users WHERE email = $1)', [req.body.email]).then(function(data) {
+        res.json({
+            emailExists: data.rows[0].exists
+        })
+    }).catch(function(err) {
+        console.log(err);
+    })
+})
+
 
 app.get('/home/:id', function(req, res) {
     var sessionUsername;
     if (req.session.username) {
         db.query('SELECT * FROM posts ORDER BY created_at DESC LIMIT $1', [10 + req.params.id * 10]).then(function(data) {
             return db.query('SELECT  post_id, COUNT (post_id) FROM  comments GROUP BY  post_id;').then(function(counter){
-            console.log("hello");
             res.json({
                 posts: data.rows,
-                totalPosts: counter.rows,
-                session: req.session.username
+                session: req.session.username,
+                totalPosts: counter.rows
+
             });
             })
         }).catch(function(err) {
@@ -177,10 +205,9 @@ app.get('/home/:id', function(req, res) {
     } else {
         db.query('SELECT * FROM posts ORDER BY created_at DESC LIMIT $1', [10 + req.params.id * 10]).then(function(data) {
             return db.query('SELECT  post_id, COUNT (post_id) FROM  comments GROUP BY  post_id;').then(function(counter){
-            console.log("hello");
             res.json({
                 posts: data.rows,
-                totalPosts: counter.rows,
+                totalPosts: counter.rows
             });
             })
         }).catch(function(err) {
@@ -221,6 +248,7 @@ app.get('/getpost=:id', function(req, res) {
 });
 
 app.post('/addcomment', function(req, res) {
+    console.log(req.body);
     db.query('INSERT INTO comments (username, post_id, comment) VALUES ($1, $2, $3)', [req.body.username, req.body.post_id, req.body.comment]).then(function() {
         res.json({
             sucess: true
@@ -264,7 +292,7 @@ app.post('/login', function(req, res) {
     var getPass = db.query(query, params);
     getPass.then(function(data) {
         console.log(data);
-        var checkPass = hashingAndChecking.checkPassword(req.body.password, data.rows[0]['password']); //typedPass, dbPass
+        var checkPass = hashingAndChecking.checkPassword(req.body.password, data.rows[0].password); //typedPass, dbPass
         return checkPass.then(function(data) {
             // if pass match >> data = true
             if (data === true) {
@@ -273,7 +301,8 @@ app.post('/login', function(req, res) {
                     username: req.body.username
                 }
                 res.json({
-                    success: true
+                    success: true,
+                    session: req.body.username
                 })
                 console.log("response sent");
             } else if (data === false) {
@@ -291,46 +320,8 @@ app.post('/login', function(req, res) {
     });
 });
 
-app.post('/sociallogin', function(req, res) {
-    console.log(req.body.email);
-    var email = req.body.email;
-    var name = req.body.name;
-    var query = 'SELECT username FROM users WHERE email=$1;';
-    var parameters = [email];
-    db.query(query, parameters).then(function(data){
-        if (data.rows[0]){
-            req.session.username = data.rows[0].username;
-            res.json({
-                username: data.rows[0]
-            });
-        } else {
-            name = name.replace(/ /g,'');
-            usernameQuery(name, email, res);
-        }
-    });
-    function usernameQuery(username, email, res) {
-        var unQuery = 'SELECT * FROM users WHERE username=$1;';
-        var unParameters = [username];
-        db.query(unQuery, unParameters).then(function(data) {
-            if (data.rows[0]) {
-                username = username + (Math.floor(Math.random()*10)).toString();
-                usernameQuery(username);
-            } else {
-                var userInsert = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *;';
-                var password = Math.floor(Math.random() * 1000000000).toString();
-                //need to hash password
-                parameters = [username, email, password];
-                db.query(userInsert, parameters).then(function() {
-                    req.session.username = data.rows[0].username;
-                    res.json({
-                        username: username
-                    });
-                }).catch(function(err){
-                    console.log(err);
-                });
-            }
-        });
-    }
+app.get('*', function(req, res) {
+    res.sendFile(__dirname + "/public/index.html");
 });
 
 app.listen(8080, function() {

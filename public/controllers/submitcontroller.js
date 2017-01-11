@@ -17,6 +17,7 @@
                     url: formUrl,
                     text: formText
                 };
+                console.log(data);
                 $http.post('/submit', data).then(function(resp){
                     $scope.posts = resp.data.posts;
                     $location.path('/:0');
