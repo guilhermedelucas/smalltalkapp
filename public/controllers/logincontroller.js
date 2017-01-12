@@ -21,7 +21,7 @@
                $http.post('/register', registeredUserData).then(function(res){
                   // show err ( if email or password already exists) .. else redirect
                   if(!res.data.err){
-                     $location.path('/');
+                     $location.path('/:0');
                   } else {
                      $scope.errEmailOrPassExists = res.data.err;
                      res.config.data = '';
@@ -85,7 +85,7 @@
                           //need to store username
                           $scope.username = res.data.username;
                           $scope.logged = true;
-                          $location.path("/about");
+                          $location.path("/:0");
                       }
                   });
               });

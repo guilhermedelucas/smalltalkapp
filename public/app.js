@@ -31,9 +31,14 @@ const app = angular.module("app",["ngRoute"]);
                 controller  : 'SubmitCtrl'
             })
 
-            .when('/register', {
+            .when('/login', {
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
+            })
+
+            .when('/register',{
+                templateUrl: 'views/register.html',
+                controller: 'RegisterCtrl'
             })
 
             .otherwise (

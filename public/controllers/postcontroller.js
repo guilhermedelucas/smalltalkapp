@@ -39,8 +39,6 @@
                             return element
                         }
                     })
-                    console.log(commentObject);
-
                     $("#replyButton").on('click', function() {
                         var reply = {
                             username: $scope.username,
@@ -49,8 +47,11 @@
                             comment: $("#replyText").val()
                         }
                         $.post("/submit/reply", reply, function(data) {
-                            console.log(data);
-                            location.reload();
+                            if (data.sucess == false) {
+                                $('#replyButton').append("<div>Login to marke comments</div>");
+                            } else {
+                                location.reload();
+                            }
                         })
 
                     })

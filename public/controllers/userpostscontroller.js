@@ -38,6 +38,10 @@ var queryRequest = function($scope, $http) {
             $scope.logged = true;
         }
         $scope.posts = resp.data.userPosts;
+        $scope.posts.sort(function(a,b) {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+
+        });
         $scope.posts.map(function(element) {
             var currentTime = new Date();
             var postTime = new Date(element.created_at.replace(' ', 'T'));
