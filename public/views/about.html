@@ -47,15 +47,19 @@
                 </div>
                 <!-- End of password input -->
 
-                <div class='panel-footer clearfix '>
+                <!-- start of about text area -->
+                <div class='panel-footer clearfix'>
                     About:<br>
-                    <textarea id="text-submit" ng-model='about' class="form-control"></textarea><br>
-                    <button ng-click='update()' id="post-submit" class="btn btn-primary" ng-disabled="editInfo.$invalid">Update</button>
+                    <textarea id="text-submit" name="about" class="form-control" ng-model='about' placeholder="{{'Some information about you.'}}">{{about}}</textarea><br>
                 </div>
+                <!-- end of about text area -->
 
+                <!-- UPDATE BUTTON -->
+                <button class="btn btn-primary" ng-click='updateProfile(username, email, about, password)' id="post-submit" class="btn btn-primary" ng-disabled="editInfo.$invalid">Update</button>
+                <!-- UPDATE BUTTON -->
             </div>
         </form>
-        <p ng-show='submiterror' class='ng-hide'>Please complete all fields</p>
+        <!-- <p ng-show='submiterror' class='ng-hide'>Please complete all fields</p> -->
     </div>
     <div class="col-xs-1 col-md-3"></div>
 </div>

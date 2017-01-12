@@ -4,6 +4,7 @@
         $http.get('/profile').then(function(resp) {
                 $scope.email = resp.data.userData[0].email;
                 $scope.username = resp.data.session;
+                $scope.about = resp.data.userData[0].about;
                 $scope.logged = true;
             })
             //username field
@@ -19,7 +20,6 @@
                 $http.post('/profile/username', {
                     username: username
                 }).then(function(res) {
-                    console.log(res);
                     if (res.data.usernameExists === false) {
                         $scope.showUsernameCheckButton = false;
                         $scope.updateUsernameFailed = false;
@@ -41,47 +41,33 @@
             }
         }
         $scope.attemptToUpdateEmail = function(email) {
-                $http.post('/profile/email', {
-                    email: email
-                }).then(function(res) {
-                    console.log(res);
-                    if (res.data.emailExists === false) {
-                        $scope.showEmailCheckButton = false;
-                        $scope.updateEmailFailed = false;
-                        $scope.updateEmailSuccess = true;
-                    } else if (res.data.emailExists === true) {
-                        $scope.showEmailCheckButton = false;
-                        $scope.updateEmailSuccess = false;
-                        $scope.updateEmailFailed = true;
-                    }
-                })
-            }
-            //password field
-        $scope.userCheckingNewPassword = function(password) {
-            if ($scope.password === password) {
-                $scope.showPasswordCheckButton = false;
-                $scope.samePassword = true; //get back to this later
-            } else {
-                $scope.showPasswordCheckButton = true;
-            }
-        }
-
-        $scope.attemptToUpdatePass = function(password) {
-            $http.post('/profile/password', {
-                password: password
+            $http.post('/profile/email', {
+                email: email
             }).then(function(res) {
-                console.log(res);
-                // if (res.data.emailExists === false){
-                //    $scope.showEmailCheckButton = false;
-                //    $scope.updateEmailFailed = false;
-                //    $scope.updateEmailSuccess = true;
-                // } else if (res.data.emailExists === true){
-                //    $scope.showEmailCheckButton = false;
-                //    $scope.updateEmailSuccess = false;
-                //    $scope.updateEmailFailed = true;
-                // }
+                if (res.data.emailExists === false) {
+                    $scope.showEmailCheckButton = false;
+                    $scope.updateEmailFailed = false;
+                    $scope.updateEmailSuccess = true;
+                } else if (res.data.emailExists === true) {
+                    $scope.showEmailCheckButton = false;
+                    $scope.updateEmailSuccess = false;
+                    $scope.updateEmailFailed = true;
+                }
             })
         }
-
+        $scope.updateProfile = function(username, email, about, password) {
+            var updatedData = {
+                username: username,
+                email: email,
+                password: password,
+                about: about
+            }
+            $http.post('/profile/update', updatedData).then(function(res) {
+                console.log(res);
+                res.config.data = "";
+                res.data = "";
+                $location.path("/:0");
+            })
+        }
     })
 })();
