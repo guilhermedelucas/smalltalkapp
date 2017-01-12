@@ -355,6 +355,50 @@ app.post('/login', function(req, res) {
     });
 });
 
+app.post('/sociallogin', function(req, res) {
+    console.log(req.body);
+    var email = req.body.email;
+    var name = req.body.name;
+    var id = req.body.id;
+    var query = 'SELECT username FROM users WHERE email=$1 OR facebookID=$2;';
+    var parameters = [email, id];
+    db.query(query, parameters).then(function(data){
+        if (data.rows[0]){
+            req.session.username = data.rows[0].username;
+            res.json({
+                username: data.rows[0]
+            });
+        } else {
+            name = name.replace(/ /g,'');
+            console.log(name);
+            usernameQuery(name, email, id, res);
+        }
+    });
+    function usernameQuery(username, email, id, res) {
+        var unQuery = 'SELECT * FROM users WHERE username=$1;';
+        var unParameters = [username];
+        db.query(unQuery, unParameters).then(function(data) {
+            if (data.rows[0]) {
+                username = username + (Math.floor(Math.random()*10)).toString();
+                usernameQuery(username, email, id, res);
+            } else {
+                var userInsert = 'INSERT INTO users (username, email, password, facebookID) VALUES ($1, $2, $3, $4) RETURNING *;';
+                var password = Math.floor(Math.random() * 1000000000).toString();
+                //need to hash password
+                parameters = [username, email, password, id];
+                db.query(userInsert, parameters).then(function(data) {
+                    req.session.username = data.rows[0].username;
+                    res.json({
+                        username: username
+                    });
+                }).catch(function(err){
+                    console.log(err);
+                });
+            }
+        });
+    }
+});
+
 app.get('*', function(req, res) {
     res.sendFile(__dirname + "/public/index.html");
 });

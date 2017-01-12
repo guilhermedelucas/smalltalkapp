@@ -113,17 +113,17 @@ var queryCommentsRequest = function($location, $scope, $http, postId) {
 
         $scope.comments.forEach(function(findReply) {
             if (!findReply.comment_id) {
-                $("#display-comments").prepend('<div class="panel panel-default"><li class="panel-body">  ' + findReply.comment + '</li><div class="panel-footer clearfix">Posted by ' + findReply.username + 'at <span class="label label-primary">' + findReply.created_at + '</span><span class="label label-success" id="reply' + findReply.id + '">reply</span></span></div><ul id ="commentid' + findReply.id + '"></div></ul></div>')
+                $("#display-comments").prepend('<div class="panel panel-default"><li class="panel-body">  ' + findReply.comment + '</li><div class="panel-footer clearfix">Posted by ' + findReply.username + ' <span class="label label-primary">' + findReply.created_at + '</span><span class="label label-success" id="reply' + findReply.id + '">reply</span></span></div><ul id ="commentid' + findReply.id + '"></div></ul></div>')
             } else if (findReply.comment_id) {
                 $scope.comments.forEach(function(findPostEqualToReply) {
                     if (findReply.comment_id == findPostEqualToReply.id) {
                         if (findPostEqualToReply.reply) {
                             findPostEqualToReply.reply.push(findReply.comment);
-                            $("#commentid" + findReply.comment_id).prepend('<ul id ="commentid' + findReply.id + '" style="margin-left:30px"><div class="panel panel-default"><li class="panel-body"><i class="fa fa-level-down" aria-hidden="true"></i> ' + findReply.comment + '</li><div class="panel-footer clearfix">Posted by ' + findReply.username + 'at <span class="label label-primary">' + findReply.created_at + '</span><span class="label label-success" id="reply' + findReply.id + '">reply</span></div></div></ul>');
+                            $("#commentid" + findReply.comment_id).prepend('<ul id ="commentid' + findReply.id + '" style="margin-left:30px"><div class="panel panel-default"><li class="panel-body"><i class="fa fa-level-down" aria-hidden="true"></i> ' + findReply.comment + '</li><div class="panel-footer clearfix">Posted by ' + findReply.username + ' <span class="label label-primary">' + findReply.created_at + '</span><span class="label label-success" id="reply' + findReply.id + '">reply</span></div></div></ul>');
                         } else {
                             findPostEqualToReply.reply = [];
                             findPostEqualToReply.reply[0] = findReply.comment;
-                            $("#commentid" + findReply.comment_id).append('<ul id ="commentid' + findReply.id + '" style="margin-left:30px"><div class="panel panel-default"><li class="panel-body"><i class="fa fa-level-down" aria-hidden="true"></i> ' + findReply.comment + '</li><div class="panel-footer clearfix">Posted by ' + findReply.username + 'at <span class="label label-primary">' + findReply.created_at + '</span><span class="label label-success" id="reply' + findReply.id + '">reply</span></span></div></div></ul>');
+                            $("#commentid" + findReply.comment_id).append('<ul id ="commentid' + findReply.id + '" style="margin-left:30px"><div class="panel panel-default"><li class="panel-body"><i class="fa fa-level-down" aria-hidden="true"></i> ' + findReply.comment + '</li><div class="panel-footer clearfix">Posted by ' + findReply.username + ' <span class="label label-primary">' + findReply.created_at + '</span><span class="label label-success" id="reply' + findReply.id + '">reply</span></span></div></div></ul>');
                         }
                     }
 

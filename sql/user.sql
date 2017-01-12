@@ -5,9 +5,10 @@ DROP TABLE IF EXISTS comments;
 CREATE TABLE users(
    id SERIAL PRIMARY KEY,
    username VARCHAR(225) not null UNIQUE,
-   email VARCHAR(255) not null UNIQUE,
+   email VARCHAR(255) UNIQUE,
    password VARCHAR(255) not null,
    about VARCHAR(255),
+   facebookID VARCHAR(255),
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
