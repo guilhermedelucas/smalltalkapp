@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var password = require("./password.json");
+// var password = require("./password.json");
 //disable var passwor for post on heroku
 var spicedPg = require('spiced-pg');
 var db = spicedPg(process.env.DATABASE_URL || 'postgres:' + password.dbUser + ':' + password.dbPassword + '@localhost:5432/smalltalk');

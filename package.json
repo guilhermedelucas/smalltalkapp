@@ -1,7 +1,7 @@
 {
-  "name": "imageboard",
+  "name": "smalltalkspiced",
   "version": "1.0.0",
-  "description": "Imageboard on backbone",
+  "description": "smalltalkapp on angular",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spicedacademy/paprika-imageboard.git"
+    "url": "git+https://github.com/guilhermedelucas/smalltalkapp.git"
   },
   "author": "Guilherme Gomes de Lucas",
   "license": "ISC",
