@@ -43,6 +43,15 @@ app.use(bodyParser.json({
 }));
 
 
+request('https://source.unsplash.com/random/1440x900', {
+    encoding: 'binary'
+}, function(req, res, body) {
+    fs.writeFile('./public/images/background.jpg', body, 'binary', function(err) {
+        console.log(err);
+    });
+    console.log("image_changed");
+});
+
 setInterval(function() {
     request('https://source.unsplash.com/random/1440x900', {
         encoding: 'binary'
