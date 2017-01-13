@@ -1,6 +1,7 @@
 (function() {
 
     app.controller('PostCtrl', function($rootScope, $location, $scope, $http, $location) {
+        $(window).scrollTop(0);
         $rootScope.activetab = $location.path();
         var postId = window.location.pathname.replace("/post=", '');
         queryCommentsRequest($location, $scope, $http, postId);

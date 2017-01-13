@@ -1,6 +1,7 @@
 (function () {
     app.controller('SubmitCtrl', function($rootScope, $location, $scope, $http)
-    {   $rootScope.activetab = $location.path();
+    {   $(window).scrollTop(0);
+        $rootScope.activetab = $location.path();
 
         $http.get('submit/checksession').then(function(resp){
             $scope.username = resp.data.username;

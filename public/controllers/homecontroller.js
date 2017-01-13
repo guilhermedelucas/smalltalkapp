@@ -3,6 +3,7 @@
     app.controller('HomeCtrl', function($rootScope, $location, $scope, $http) {
         //login//
         //display posts//
+        $(window).scrollTop(0);
         $scope.pageCounter = 0;
         $rootScope.activetab = $location.path();
         queryHomeRequest($scope, $http);
@@ -32,7 +33,8 @@
             $rootScope.username = userId;
             console.log(userId);
             console.log($scope.username);
-            if (userId === $scope.username){
+            console.log($scope.logged);
+            if (userId === $scope.username && $scope.logged){
                 $location.path('/myposts=' + userId);
             } else {
                 $location.path('/userposts=' + userId);

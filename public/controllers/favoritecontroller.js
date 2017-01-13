@@ -1,6 +1,7 @@
 (function() {
 
     app.controller('favoriteCtrl', function($rootScope, $location, $scope, $http) {
+        $(window).scrollTop(0);
         $rootScope.activetab = $location.path();
         queryRequestFavorites($scope, $http);
         $scope.counter = 0;

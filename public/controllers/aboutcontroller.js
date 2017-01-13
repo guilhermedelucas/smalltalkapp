@@ -1,5 +1,6 @@
 (function() {
     app.controller('AboutCtrl', function($rootScope, $scope, $location, $http) {
+        $(window).scrollTop(0);
         $rootScope.activetab = $location.path();
         $http.get('/profile').then(function(resp) {
                 $scope.email = resp.data.userData[0].email;

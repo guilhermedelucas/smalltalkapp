@@ -1,6 +1,7 @@
 (function() {
 
     app.controller('UserCtrl', function($rootScope, $location, $scope, $http) {
+        $(window).scrollTop(0);
         $rootScope.activetab = $location.path();
         queryRequest($scope, $http , $rootScope);
         $scope.counter = 0;

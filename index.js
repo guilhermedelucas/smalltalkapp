@@ -312,6 +312,7 @@ app.get('/home/:id', function(req, res) {
 });
 
 app.get('/getpost=:id', function(req, res) {
+    console.log('gp run');
     if (req.session.username) {
         db.query('SELECT * FROM comments WHERE post_id = $1', [req.params.id]).then(function(comments) {
             db.query('SELECT * FROM posts WHERE id = $1', [req.params.id]).then(function(post) {
@@ -414,7 +415,6 @@ app.post('/login', function(req, res) {
 });
 
 app.post('/sociallogin', function(req, res) {
-    console.log(req.body);
     var email = req.body.email;
     var name = req.body.name;
     var id = req.body.id;
@@ -428,7 +428,6 @@ app.post('/sociallogin', function(req, res) {
             });
         } else {
             name = name.replace(/ /g,'');
-            console.log(name);
             usernameQuery(name, email, id, res);
         }
     });

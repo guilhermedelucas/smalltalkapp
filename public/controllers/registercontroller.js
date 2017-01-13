@@ -2,6 +2,7 @@
 
    app.controller('RegisterCtrl', function($rootScope, $scope, $location, $http)
    {
+      $(window).scrollTop(0);
       $rootScope.activetab = $location.path();
       $scope.looged = false;
       //registration

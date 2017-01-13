@@ -1,7 +1,7 @@
 (function () {
 
    app.controller('LoginCtrl', function($rootScope, $scope, $location, $http)
-   {
+   {  $(window).scrollTop(0);
       $rootScope.activetab = $location.path();
       $rootScope.google = false;
       //registration

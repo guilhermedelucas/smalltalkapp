@@ -1,6 +1,7 @@
 (function() {
 
     app.controller('myPostsCtrl', function($rootScope, $location, $scope, $http) {
+        $(window).scrollTop(0);
         $rootScope.activetab = $location.path();
         myqueryRequest($scope, $http);
         $scope.counter = 0;
