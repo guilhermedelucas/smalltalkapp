@@ -32,3 +32,9 @@ CREATE TABLE comments(
    comment TEXT,
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE favorites(
+   id SERIAL PRIMARY KEY,
+   username VARCHAR(255) NOT NULL,
+   posts_id INTEGER NOT NULL
+);

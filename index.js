@@ -105,7 +105,7 @@ app.post('/submit', function(req, res) {
     }
 });
 
-app.get('/user/getposts', function(req, res) {
+app.get('/getmyposts', function(req, res) {
     db.query("SELECT * FROM posts WHERE username = $1", [req.session.username]).then(function(data) {
         console.log(data);
         res.json({
@@ -118,7 +118,39 @@ app.get('/user/getposts', function(req, res) {
     });
 
     console.log(req.params.id);
-})
+});
+
+app.get('/user/posts/:username', function(req, res) {
+    var username = req.params.username;
+    console.log(username);
+    db.query("SELECT * FROM posts WHERE username = $1", [username]).then(function(data) {
+        console.log(data);
+        res.json({
+            userPosts: data.rows,
+            session: req.session.username
+        })
+    }).catch(function(err) {
+        console.log(err);
+        res.sendStatus(500);
+    });
+
+    console.log(req.params.id);
+});
+
+app.get('/user/getfavorites', function(req, res) {
+    var username = req.session.username;
+    var query= 'SELECT posts.id AS id, posts.username AS username, title, url, post, imageurl, total_comments, updated_at, created_at FROM posts JOIN favorites ON (posts.id=favorites.posts_id) WHERE favorites.username=$1;';
+    db.query(query, [username]).then(function(data) {
+        console.log(data);
+        res.json({
+            favorites: data.rows,
+            session: req.session.username
+        })
+    }).catch(function(err) {
+        console.log(err);
+        res.sendStatus(500);
+    });
+});
 
 app.post('/user/deletepost', function(req, res) {
     var deleteId = req.body.deleteId;
@@ -131,6 +163,33 @@ app.post('/user/deletepost', function(req, res) {
     }).catch(function(err) {
         console.log(err);
     })
+});
+
+app.post('/deletefavorite', function(req, res) {
+    var posts_id =  req.body.deleteId;
+    var username = req.session.username;
+    var query = 'DELETE FROM favorites WHERE posts_id = $1 AND username = $2;';
+    db.query(query, [posts_id, username]).then(function() {
+        res.json({
+            success: true
+        });
+    }).catch(function(err) {
+        console.log(err);
+    });
+});
+
+app.post('/addfavorite', function(req, res) {
+    var username = req.session.username;
+    var posts_id = req.body.posts_id;
+    console.log(req.session.username);
+    var query = 'INSERT INTO favorites (username, posts_id) VALUES ($1, $2);';
+    db.query(query, [username, posts_id]).then(function() {
+        res.json({
+            success: true
+        });
+    }).catch(function(err) {
+        console.log(err);
+    });
 });
 
 app.post('/submit/reply', function(req, res) {
@@ -222,9 +281,8 @@ hashingAndChecking.hashPassword(req.body.password).then(function(hashedPass) {
 });
 
 app.get('/home/:id', function(req, res) {
-    var sessionUsername;
     if (req.session.username) {
-        db.query('SELECT * FROM posts ORDER BY created_at DESC LIMIT $1', [10 + req.params.id * 10]).then(function(data) {
+        db.query('SELECT posts.id AS id, posts.username AS username, title, url, posts, imageurl, total_comments, created_at, posts_id FROM posts LEFT OUTER JOIN favorites ON (posts.id=favorites.posts_id AND favorites.username=$1) ORDER BY created_at DESC LIMIT $2', [req.session.username, 10 + req.params.id * 10]).then(function(data) {
             return db.query('SELECT  post_id, COUNT (post_id) FROM  comments GROUP BY  post_id;').then(function(counter) {
                 res.json({
                     posts: data.rows,

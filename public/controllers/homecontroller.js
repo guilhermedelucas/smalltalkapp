@@ -13,6 +13,31 @@
         $scope.getPostInfo = function(post) {
             $rootScope.postData = post;
         };
+        $scope.addToFav = function(postsid) {
+            var data = {
+                posts_id: postsid
+            };
+            console.log(data);
+            $http.post('/addfavorite', data).then(function(res){
+                if (res.data.success) {
+                    $scope.posts.map(function(element, index) {
+                        if (element.id == postsid) {
+                            $scope.posts[index].favorite = true;
+                        }
+                    });
+                }
+            });
+        };
+        $scope.usernameGet = function(userId) {
+            $rootScope.username = userId;
+            console.log(userId);
+            console.log($scope.username);
+            if (userId === $scope.username){
+                $location.path('/myposts=' + userId);
+            } else {
+                $location.path('/userposts=' + userId);
+            }
+        };
     });
 })();
 
@@ -28,6 +53,10 @@ var queryHomeRequest = function($scope, $http) {
         $scope.posts = resp.data.posts;
         //add counter to posts data
         $scope.posts.forEach(function(element) {
+            if (element.posts_id) {
+                element.favorite = true;
+            }
+            console.log(element);
             $scope.counter.forEach(function(el, index) {
                 if (element.id == el.post_id) {
                     element.counter = parseInt(el.count);

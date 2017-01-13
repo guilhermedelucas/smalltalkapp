@@ -16,9 +16,13 @@ const app = angular.module("app",["ngRoute"]);
                 controller: 'PostCtrl'
             })
 
+            .when('/myposts=:id', {
+                templateUrl: 'views/mypost.html',
+                controller: 'myPostsCtrl'
+            })
             .when('/userposts=:id', {
-                templateUrl: 'views/userpost.html',
-                controller: 'UserPostsCtrl'
+                templateUrl: 'views/user.html',
+                controller: 'UserCtrl'
             })
 
             .when('/about', {
@@ -39,6 +43,11 @@ const app = angular.module("app",["ngRoute"]);
             .when('/register',{
                 templateUrl: 'views/register.html',
                 controller: 'RegisterCtrl'
+            })
+
+            .when('/favorites=:id', {
+                templateUrl: 'views/favorites.html',
+                controller: 'favoriteCtrl'
             })
 
             .otherwise (
